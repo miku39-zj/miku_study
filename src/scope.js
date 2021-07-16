@@ -35,20 +35,7 @@ a(18);
 // 创建阶段： 1.绑定this 2.创建词法环境（全局环境、函数环境（包含argument）） 3.变量环境
 // 词法环境和 变量环境， 词法环境存储函数声明和变量绑定（let、const） 变量环境（var）变量绑定
 
-//var声明 变量提升 ， 函数声明 提升
 
-console.log(b, "b");
-var b
-
-function b() {}
-
-// var声明提升
-for (var i = 0; i < 5; i++) {
-  // console.log(i,"i"); // 输出 1,2,3,4,5
-  setTimeout(() => {
-    console.log(i, "delay"); // 输出 5 个 5
-  })
-}
 
 
 function func() {
@@ -123,3 +110,31 @@ console.log(instance1 === instance2, "Sington");
 // return function unwatchFn () {
 //   watcher.teardown()
 // }
+
+
+//var声明 变量提升 函数作用域， 函数声明 提升 优先
+
+console.log(b, "b");
+var b
+
+function b() {}
+
+// var声明提升
+for (var i = 0; i < 5; i++) {
+  // console.log(i,"i"); // 输出 1,2,3,4,5
+  setTimeout(() => {
+    console.log(i, "var"); // 输出 5 个 5
+  })
+}
+
+// let声明 变量不提升 暂时性死区 块作用域  不能重复声明
+// 暂时性死区： 必须在声明之后执行， 声明之前执行的瞬间叫 ‘暂时性死区：’
+for (let i = 0; i < 5; i++) {
+  // console.log(i,"i"); // 输出 1,2,3,4,5
+  setTimeout(() => {
+    console.log(i, "let"); // 输出 5 个 5
+  })
+}
+// let 在全局作用域中声明的变量不会成为window对象的属性 （var声明的变量则会）
+
+// const 在声明变量是必须同时初始化变量  不能重复声明  不能修改
