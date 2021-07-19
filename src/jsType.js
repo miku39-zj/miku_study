@@ -21,3 +21,13 @@ console.log(typeof new Map()); //object
 // parseInt('1',0) ,0会看成10进制
 console.log([1, 2, 3].map(parseInt));
 console.log([1, 2, 3].map((x, i) => parseInt(x, i)));
+
+// 函数参数按值传递
+function setName(obj) {
+  obj.name = "Mike"
+  obj = new Object(); //改变obj 的引用
+  obj.name = "Tom"
+}
+const person = new Object()
+setName(person)
+console.log(person.name,"Mike"); //打印Mike, 如果是按引用传值就会打印Tom
