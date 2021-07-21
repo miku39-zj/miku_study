@@ -1,6 +1,9 @@
 /*
  * @Description:  原型
  */
+//所有函数默认拥有一个prototype的属性，指向原型对象，Func.prototype访问
+// 在原型上定义的属性和方法可以被实例对象共享
+// 对象上暴露__proto__属性，可以访问对象原型，
 var anotherObj = {
   a: 5
 }
@@ -16,7 +19,7 @@ for (var item in myObj) { // 对象可枚举属性
   console.log(item, "item"); // a item
 }
 
-//所有函数默认拥有一个prototype的属性，指向原型对象，Func.prototype访问
+
 
 function Foo(name) {
   this.name = name
