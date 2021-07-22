@@ -1,12 +1,54 @@
 /*
  * @Description: 
  */
+// webpack-dev-server 热更新部署
+
+// 一 、优化打包速度
+// 1. mode可设置development production两个参数
+// 如果没有设置，webpack4 会将 mode 的默认值设置为 production 
+// production模式下会进行tree shaking(去除无用代码)和uglifyjs(代码压缩混淆）
+
+// 2. 缩小文件的搜索范围(配置include exclude alias noParse extensions)
+// alias: 当我们代码中出现 import 'vue'时， webpack会采用向上递归搜索的方式去node_modules 目录下找。
+// 为了减少搜索范围我们可以直接告诉webpack去哪个路径下查找。也就是别名(alias)的配置。
+// include exclude 同样配置include exclude也可以减少webpack loader的搜索转换时间。exclude: /node_modules/
+// noParse  当我们代码中使用到import jq from 'jquery'时，webpack会去解析jq这个库是否有依赖其他的包。增加noParse属性,告诉webpack不必解析，以此增加打包速度。
+// extensions webpack会根据extensions定义的后缀查找文件(频率较高的文件类型优先写在前面)
+
+// 3 使用HappyPack开启多进程Loader转换
+// 耗费时间大多数用在loader解析转换以及代码的压缩中
+// HappyPack的基本原理是将这部分任务分解到多个子进程中去并行处理，子进程处理完成后把结果发送到主进程中，从而减少总的构建时间
+const HappyPack = require('happypack')
+const os = require('os')
+const happyThreadPool = HappyPack.ThreadPool({
+  size: os.cpus().length
+})
+
+// 4 使用webpack-parallel-uglify-plugin 增强代码压缩 优化代码的压缩时间
+const ParalleUglifyPlugin = require('webpack-parallel-uglify-plugin')
+
+// 5 抽离第三方模块
+// 每次更改我本地代码的文件的时候，webpack只需要打包我项目本身的文件代码，而不会再去编译第三方库
+// 使用webpack内置的DllPlugin DllReferencePlugin进行抽离
+
+// 6 配置缓存
+// 前大部分 loader 都提供了cache 配置项。比如在 babel-loader 中，可以通过设置cacheDirectory 来开启缓存
+// npm i -D cache-loader
+
+
+// 二 、 优化打包文件体积
+
+// copy-webpack-plugin 拷贝静态资源
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+
 const path = require('path');
+const Webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 // clean-webpack-plugin:每次执行npm run build打包输出前清空文件夹
 const {
   CleanWebpackPlugin
 } = require('clean-webpack-plugin')
+
 
 //为css添加浏览器前缀 postcss-loader autoprefixer(插件) 
 
@@ -20,21 +62,22 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 // vue-loader 用于解析.vue文件
 // vue-template-compiler 用于编译模板 配置如下
-const vueLoaderPlugin = require('vue-loader/lib/plugin')
+const vueLoaderPlugin = require('vue-loader/lib/plugin');
+const {
+  webpack
+} = require('webpack');
 
-// webpack-dev-server 热更新部署
 
-const Webpack = require('webpack')
 
 module.exports = {
-  mode: 'development',
-  entry: ["@babel/polyfill",path.resolve(__dirname, './src/main.js')], //入口文件
+  mode: 'production',
+  entry: ["@babel/polyfill", path.resolve(__dirname, './src/main.js')], //入口文件
   output: {
     // filename: 'output.js', //打包文件
     filename: '[name].[hash:8].js', //打包后的文件名称
     path: path.resolve(__dirname, './dist') //打包后目录
   },
-  module: {
+  module: { //module.rules 配置loader
     rules: [{
         test: /\.css$/,
         // use: ['style-loader', 'css-loader', 'postcss-loader'],
@@ -55,7 +98,7 @@ module.exports = {
           }
         }]
       },
-      { 
+      {
         test: /\.js$/,
         use: {
           loader: 'babel-loader', //将es6/7/8 转换成 es5, 不会对新的api转换，例如map
@@ -68,17 +111,55 @@ module.exports = {
       {
         test: /\.vue$/,
         use: ['vue-loader']
+      },
+      {
+        test: /\.js$/,
+        use: [{
+          loader: "happypack/loader?id=happyBabel"
+        }],
+        exclude: /node_modules/
+      },
+      {
+        test: /\.ext$/,
+        use: [
+          'cache-loader',
+          ...loaders
+        ],
+        include: path.resolve(__dirname, 'src')
       }
     ]
   },
   resolve: {
     alias: {
       'vue$': 'vue/dist/vue.runtime.esm.js',
-      '@': path.resolve(__dirname,'./src')
+      '@': path.resolve(__dirname, './src')
     },
-    extensions:['*','.js','.json','.vue']
+    extensions: ['*', '.js', '.json', '.vue']
   },
-  plugins: [
+  plugins: [ //插件  webpack 插件是一个具有 apply 方法的 JavaScript 对象  通过require('html-webpack-plugin')
+    new Webpack.DllReferencePlugin({
+      context: __dirname,
+      manifest: require('./vendor-manifest.json')
+    }),
+    new CopyWebpackPlugin({
+      patterns: [{
+        from: 'static',
+        to: 'static'
+      }]
+    }),
+    new HappyPack({
+      id: 'happyBabel', // 与loader对应的id标识
+      loaders: [{
+        loader: 'babel-loader',
+        options: {
+          presets: [
+            ['@babel/preset-env']
+          ],
+          cacheDirectory: true
+        }
+      }],
+      threadPool: happyThreadPool //共享进程池
+    }),
     new vueLoaderPlugin(),
     new Webpack.HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin({
@@ -98,6 +179,24 @@ module.exports = {
     //   chunks: ['header']
     // }),
   ],
+  optimization: {
+    minimizer: [
+      new ParalleUglifyPlugin({
+        cacheDir: '.cache/',
+        uglifyJS: {
+          output: {
+            comments: false,
+            beautify: false
+          },
+          compress: {
+            drop_console: true,
+            collapse_var: true,
+            reduce_var: true
+          }
+        }
+      })
+    ]
+  },
   devServer: {
     port: 3000,
     hot: true,
