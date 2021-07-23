@@ -176,6 +176,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/index.html'),
       filename: 'index.html',
+      minify: {
+        collapseWhitespace: false, //是否折叠空白
+      }
       // chunks: ['main']
     }),
 
