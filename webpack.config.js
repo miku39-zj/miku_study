@@ -37,6 +37,15 @@ const ParalleUglifyPlugin = require('webpack-parallel-uglify-plugin')
 
 
 // 二 、 优化打包文件体积
+// webpack-bundle-analyzer 打包分析
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+// Externals的方式，将这些不需要打包的静态资源从构建逻辑中剔除出去
+// externals: {
+//   jquery: 'jQuery'
+// }
+
+// Tree-shaking 主要作用是用来清除代码中无用的部分
 
 // copy-webpack-plugin 拷贝静态资源
 const CopyWebpackPlugin = require('copy-webpack-plugin')
@@ -63,9 +72,6 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 // vue-loader 用于解析.vue文件
 // vue-template-compiler 用于编译模板 配置如下
 const vueLoaderPlugin = require('vue-loader/lib/plugin');
-const {
-  webpack
-} = require('webpack');
 
 
 
@@ -121,11 +127,8 @@ module.exports = {
       },
       {
         test: /\.ext$/,
-        use: [
-          'cache-loader',
-          ...loaders
-        ],
-        include: path.resolve(__dirname, 'src')
+        use: ['cache-loader', 'babel-loader'],
+        include: path.resolve('src'),
       }
     ]
   },
@@ -137,6 +140,7 @@ module.exports = {
     extensions: ['*', '.js', '.json', '.vue']
   },
   plugins: [ //插件  webpack 插件是一个具有 apply 方法的 JavaScript 对象  通过require('html-webpack-plugin')
+    // new BundleAnalyzerPlugin(),
     new Webpack.DllReferencePlugin({
       context: __dirname,
       manifest: require('./vendor-manifest.json')
@@ -168,35 +172,37 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     require('autoprefixer'),
+
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/index.html'),
       filename: 'index.html',
       // chunks: ['main']
     }),
+
     // new HtmlWebpackPlugin({ 多入口
     //   template: path.resolve(__dirname, './src/header.html'),
     //   filename: 'header.html',
     //   chunks: ['header']
     // }),
   ],
-  optimization: {
-    minimizer: [
-      new ParalleUglifyPlugin({
-        cacheDir: '.cache/',
-        uglifyJS: {
-          output: {
-            comments: false,
-            beautify: false
-          },
-          compress: {
-            drop_console: true,
-            collapse_var: true,
-            reduce_var: true
-          }
-        }
-      })
-    ]
-  },
+  // optimization: {
+  //   minimizer: [
+  //     new ParalleUglifyPlugin({
+  //       cacheDir: '.cache/',
+  //       uglifyJS: {
+  //         output: {
+  //           comments: false,
+  //           beautify: false
+  //         },
+  //         compress: {
+  //           drop_console: true,
+  //           collapse_vars: true,
+  //           reduce_vars: true
+  //         }
+  //       }
+  //     })
+  //   ]
+  // },
   devServer: {
     port: 3000,
     hot: true,

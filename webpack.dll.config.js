@@ -1,4 +1,6 @@
 /*
+ * 2021-07-21 20:27:55
+ * @create by: zj
  * @Description: 
  */
 
@@ -9,6 +11,7 @@ const path = require("path");
 const webpack = require("webpack")
 
 module.exports = {
+  mode: 'production',
   entry: {
     // vendor: ['vue', 'element-ui']
     vendor: ['vue']
