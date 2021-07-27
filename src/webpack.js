@@ -43,7 +43,9 @@ const parser = require('@babel/parser')
 const traverse = require('@babel/traverse').default
 
 // 将 AST 语法树转换为浏览器可执行代码,我们这里使用@babel/core 和 @babel/preset-env
-const { transformFromAst } = require('@babel/core') 
+const {
+  transformFromAst
+} = require('@babel/core')
 
 const options = require('../webpack.config')
 const path = require('path')
@@ -51,7 +53,7 @@ const path = require('path')
 const Parser = {
   getAst: path => {
     // 读取入口文件
-    const content = fs.readFileSync(path,'utf-8')
+    const content = fs.readFileSync(path, 'utf-8')
     // 将文件内容转为AST抽象语法树
     return parser.parse(content, {
       sourceType: 'module'
@@ -62,7 +64,9 @@ const Parser = {
     // 遍历所有的 import 模块,存入dependecies
     traverse(ast, {
       // 类型为 ImportDeclaration 的 AST 节点 (即为import 语句)
-      ImportDeclaration({ node }) {
+      ImportDeclaration({
+        node
+      }) {
         const dirname = path.dirname(filename)
         // 保存依赖模块路径,之后生成依赖关系图需要用到
         const filepath = './' + path.join(dirname, node.source.value)
@@ -73,7 +77,9 @@ const Parser = {
   },
   getCode: ast => {
     // AST 转换为code
-    const { code } = transformFromAst(ast, null, {
+    const {
+      code
+    } = transformFromAst(ast, null, {
       presets: ['@babel/preset-env']
     })
     return code
@@ -81,9 +87,12 @@ const Parser = {
 }
 
 class Compiler {
-  constructor (options) {
+  constructor(options) {
     // webpack 配置
-    const { entry , output } = options
+    const {
+      entry,
+      output
+    } = options
     // 入口
     this.entry = entry
     // 出口
@@ -92,21 +101,74 @@ class Compiler {
     this.modules = []
   }
   // 构建启动
-  run () {
-    const { getAst, getDependecies, getCode } = Parser
-    const ast = getAst(this.entry[1])
+  run() {
+    const info = this.build(this.entry[1])
+    this.modules.push(info)
+    this.modules.forEach(({
+      dependecies
+    }) => {
+      if (dependecies) {
+        for (const dependency in dependecies) {
+          this.modules.push(this.build(dependecies[dependency]))
+        }
+      }
+    })
+    // 生成依赖关系图    
+    const dependencyGraph = this.modules.reduce((graph, item) =>
+      ({
+        ...graph,
+        // 使用文件路径作为每个模块的唯一标识符,保存对应模块的依赖对象和文件内容        
+        [item.filename]: {
+          dependecies: item.dependecies,
+          code: item.code
+        }
+      }), {})
+
+  }
+  build(filename) {
+    const {
+      getAst,
+      getDependecies,
+      getCode
+    } = Parser
+    const ast = getAst(filename)
     console.log(ast);
 
-    const dependecies = getDependecies(ast, this.entry[1])
-    console.log(dependecies,"dependecies");
+    const dependecies = getDependecies(ast, filename)
+    console.log(dependecies, "dependecies");
 
     const code = getCode(ast)
-    console.log(code,"code");
+    console.log(code, "code");
+    return {
+      filename, //文件路径
+      dependecies, //依赖对象
+      code // 文件内容
+    }
   }
   // 重写require函数， 输出bundle
-  generate () {}
+  // 重写 require函数 (浏览器不能识别commonjs语法),输出bundle
+  generate() {
+    // 输出文件路径    
+    const filePath = path.join(this.output.path, this.output.filename)
+    // 懵逼了吗? 没事,下一节我们捋一捋    
+    const bundle = `(function(graph){      
+      function require(module){        
+        function localRequire(relativePath){          
+          return require(graph[module].dependecies[relativePath])       
+         }        
+        var exports = {};        
+        (function(require,exports,code){          
+          eval(code)        
+        })(localRequire,exports,graph[module].code);        
+        return exports;      
+      }      
+      require('${this.entry}')    
+    })(${JSON.stringify(code)})`
+    // 把文件内容写入到文件系统    
+    fs.writeFileSync(filePath, bundle, 'utf-8')
+
+  }
 
 }
 
 new Compiler(options).run()
-
