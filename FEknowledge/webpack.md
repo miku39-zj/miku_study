@@ -24,11 +24,22 @@ webpack 的核心是用于现代 JavaScript 应用程序的**静态模块打包�
 
 ### Loader
 
-将所有类型的文件转换为 webpack 能够处理的有效模块
+模块转换器，将所有类型的文件转换为 webpack 能够处理的有效模块,运行时机，Loader运行在打包文件之前
 
 ### Plugin
 
-扩展插件
+扩展插件，插件的范围包括,从打包优化和压缩,一直到重新定义环境中的变量，plugin在整个编译周期都起作用
+
+## webpack工作流程
+
+![71b263000fa](D:\图片\71b263000fa.jpg)
+
+1. 初始化参数：从配置文件和 Shell 语句中读取与合并参数,得出最终的参数
+2. 开始编译：用参数初始化Compiler对象，加载所有所有配置插件，执行Compiler对象的run方法开始编译
+3. 确定入口： 根据entry找出所有入口文件
+4. 编译模块：调用配置loader对模块进行翻译转换
+5. 遍历 AST，收集依赖：对 模块进行转换后，再解析出当前 模块依赖的 模块
+6. 输出资源：根据入口和模块之间的依赖关系,组装成一个个包含多个模块的 Chunk，再把所有 Chunk 转换成文件输出
 
 ### Webpack配置
 
@@ -60,6 +71,85 @@ module.exports = {
     ]
 }
 ```
+
+## Loader工作流程
+
+`loader`从本质上来说其实就是一个`node`模块，根据我们设置的规则，经过它的一系列加工后还给我们加工好code
+
+工作流程：
+
+1. webpack.config.js 里配置了一个 模块 的 Loader；
+2. 遇到 相应模块 文件时，触发了 该模块的 loader;
+3. loader 接受了一个表示该 模块 文件内容的 source;
+4. loader 使用 webapck 提供的一系列 api 对 source 进行转换，得到一个 result;
+5. 将 result 返回或者传递给下一个 Loader，直到处理完毕。
+
+原则：
+
+- 单一原则: 每个 `Loader` 只做一件事；
+- 链式调用: `Webpack` 会按顺序链式调用每个 `Loader`；
+- 统一原则: 遵循 `Webpack` 制定的设计规则和结构，输入与输出均为字符串，各个 `Loader` 完全独立
+
+Loader编写
+
+```js
+const parser = require('@babel/parser')
+const traverse = require('@babel/traverse').default
+const generator = require('@babel/generator').default
+const t = require('@babel/types')
+module.exports = function(source) {
+  // source 为 compiler 传递给 Loader 的一个文件的原内容
+  // 该函数需要返回处理后的内容，这里简单起见，直接把原内容返回了，相当于该 Loader 没有做任何转换
+    
+  // 关闭该 Loader 的缓存功能
+  this.cacheable(false);
+  const ast = parser.parse(source,{ sourceType: 'module'})
+  traverse(ast,{
+    CallExpression(path){ 
+      if(t.isMemberExpression(path.node.callee) && t.isIdentifier(path.node.callee.object, {name: "console"})){
+        path.remove()
+      }
+    }
+  })
+  const output = generator(ast, {}, source);
+  return output.code
+};
+```
+
+## Plugin
+
+`plugin`则是针对整个流程执行广泛的任务。
+
+webpack 在编译过代码程中，会触发一系列 钩子事件，插件所做的，Plugin 可以监听这些事，当 webpack 构建的时候，通过 Webpack 提供的 API 改变输出结果
+
+### plugin插件结构
+
+```js
+class firstPlugin {
+  constructor (options) {
+    console.log('firstPlugin options', options)
+  }
+  apply (compiler) {
+    compiler.plugin('done', compilation => {
+      console.log('firstPlugin')
+    ))
+    compilation.hooks.someHook.tap(...)
+  }
+}
+
+module.exports = firstPlugin
+```
+
+Webpack 启动后,在读取配置的过程会初始化插件实例。在初始化 compiler 对象后，再调用插件的apply方法，给插件实例传入 compiler 对象
+
+插件实例在获取到 compiler 对象后，就可以通过 `compiler.plugin(事件名称, 回调函数)` 监听到webpack的钩子事件
+
+### compiler和compilation
+
+- Compiler 对象包含了 Webpack 环境所有的的配置信息，包含 options，loaders，plugins 这些信息，这个对象在 Webpack 启动时候被实例化，它是全局唯一的，可以简单地把它理解为 Webpack 实例
+- Compilation 对象包含了当前的模块资源、编译生成资源、变化的文件等。当 Webpack 以开发模式运行时，每当检测到一个文件变化，一次新的 Compilation 将被创建。Compilation 对象也提供了很多事件回调供插件做扩展。通过 Compilation 也能读取到 Compiler 对象
+
+Compiler 和 Compilation 的区别在于：Compiler 代表了整个 Webpack 从启动到关闭的生命周期，而 Compilation 只是代表了一次新的编译。
 
 ## 常见配置
 
