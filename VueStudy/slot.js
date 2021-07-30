@@ -3,6 +3,10 @@
  * @create by: zj
  * @Description: 插槽原理
  */
+
+//Vue Template Explorer
+
+
 import Vue from "vue"
 var child = {
   name: "child",
@@ -17,8 +21,10 @@ var child = {
   </div>`
 }
 // template 就会被编译为这样的函数
-with (this) {
-  return _c("div", [_t("bar"), _t("foo", null, null, { msg })], 2);
+with(this) {
+  return _c("div", [_t("bar"), _t("foo", null, null, {
+    msg
+  })], 2);
 }
 // _t 也就是 renderSlot的别名
 // renderSlot函数， 如果普通插槽，就直接调用函数生成 vnode，
@@ -67,8 +73,8 @@ var vm = new Vue({
   el: '#app',
   components: {
     child
-  },  
-  data(){
+  },
+  data() {
     return {
       name: 45
     }
@@ -83,13 +89,12 @@ var vm = new Vue({
 })
 // 将插槽内容作为 children 渲染的，会在父组件的渲染函数中创建，插槽内容的依赖会被父组件收集
 // 由于生成 slot 的作用域是在父组件中，所以明明是子组件的插槽 slot 的更新是会带着父组件一起更新的
-with (this) {
+with(this) {
   return _c(
     'child',
     [
       _c(
-        'template',
-        {
+        'template', {
           slot: 'name'
         },
         [_v(_s(name))]
@@ -98,3 +103,16 @@ with (this) {
     2
   )
 }
+
+// 得到vnode 将插槽渲染成children
+// {
+//   tag: 'div',
+//   children: [
+//     {
+//       tag: 'child',
+//       children: ['45']
+//     }
+//   ]
+// }
+
+// initRender 把上一步保存在 组件选项的 【_renderChildren】 放在实例的 $slot

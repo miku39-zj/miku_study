@@ -157,6 +157,34 @@ Webpack 启动后,在读取配置的过程会初始化插件实例。在初始�
 
 Compiler 和 Compilation 的区别在于：Compiler 代表了整个 Webpack 从启动到关闭的生命周期，而 Compilation 只是代表了一次新的编译。
 
+## devServer
+
+devServer: 开发服务器，用来自动化 （自动编译， 自动打开浏览器， 热部署）
+
+特点： 只会在内存中编译打包，不会有任何输出
+
+启动devServe指令为： webpack-dev-server
+
+HMR： hot modul replacement 热模块替换
+
+样式文件： 可以使用HMR功能
+
+js文件： 默认不能使用HMR功能
+
+html文件： 默认不能使用HMR功能
+
+```js
+devServer: {
+	contentBase: resolve(__dirname, 'build') // 需要运行的目录
+    compress: true, //启动gzip压缩
+    port: 300, // 端口号
+    open: true //自动打开浏览器
+    hot: true //热部署  HMR
+}
+```
+
+
+
 ## 常见配置
 
 打包HTML: 插件html-webpack-plugin
