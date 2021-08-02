@@ -8,22 +8,22 @@
 
 // ompiler代表了整个webpack从启动到关闭的生命周期，而compilation 只是代表了一次新的编译过程
 
-class firstPlugin{
-  constructor(options){
+class firstPlugin {
+  constructor(options) {
     this.options = options
   }
-  apply(compiler){
-    compiler.plugin('emit',(compilation,callback)=>{
+  apply(compiler) {
+    compiler.plugin('emit', (compilation, callback) => {
       let str = ''
-      for (let filename in compilation.assets){
+      for (let filename in compilation.assets) {
         str += `文件:${filename}  大小${compilation.assets[filename]['size']()}\n`
       }
       // 通过compilation.assets可以获取打包后静态资源信息，同样也可以写入资源
       compilation.assets['fileSize.md'] = {
-        source:function(){
+        source: function () {
           return str
         },
-        size:function(){
+        size: function () {
           return str.length
         }
       }

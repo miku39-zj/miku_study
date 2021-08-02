@@ -18,6 +18,21 @@ webpack 的核心是用于现代 JavaScript 应用程序的**静态模块打包�
 
 模块，在 Webpack 里一切皆模块,一个模块对应着一个文件。
 
+### Reslove
+
+解析，Resolve 配置 Webpack 如何寻找模块所对应的文件
+
+```js
+// Webpack alias 配置
+resolve:{
+  alias:{
+    components: './src/components/'
+  }
+}
+```
+
+当你通过 `import Button from 'components/button'` 导入时，实际上被 `alias` 等价替换成了 `import Button from './src/components/button'`。
+
 ### Chunk
 
 代码块,一个 Chunk 由多个模块组合而成,用于代码合并与分割
@@ -30,16 +45,90 @@ webpack 的核心是用于现代 JavaScript 应用程序的**静态模块打包�
 
 扩展插件，插件的范围包括,从打包优化和压缩,一直到重新定义环境中的变量，plugin在整个编译周期都起作用
 
+### mode
+
+模式：
+
+```js
+module.exports = {
+  mode: 'development',
+  //mode: 'production',
+};
+```
+
+### optimization
+
+优化，optimization 用于自定义 webpack 的内置优化配置，一般用于生产模式提升性能，常用配置项如下：
+
+- minimize：是否需要压缩 bundle；
+- minimizer：配置压缩工具，如 TerserPlugin、OptimizeCSSAssetsPlugin；
+- splitChunks：拆分 bundle；
+- runtimeChunk：是否需要将所有生成 chunk 之间共享的运行时文件拆分出来。
+
+```
+module.exports = {
+  optimization: {
+    minimizer: [
+      // 在 webpack@5 中，你可以使用 `...` 语法来扩展现有的 minimizer（即 `terser-webpack-plugin`），将下一行取消注释
+      // `...`,
+      new CssMinimizerPlugin(),
+    ],
+    splitChunks: {
+      // include all types of chunks
+      chunks: 'all',
+      // 重复打包问题
+      cacheGroups:{
+        vendors:{ //node_modules里的代码
+          test: /[\\/]node_modules[\\/]/,
+          chunks: "all",
+          name: 'vendors', //chunks name
+          priority: 10, //优先级
+          enforce: true 
+        }
+      }
+    },
+  },
+}
+```
+
+
+
+### devServer
+
+ DevServer 会启动一个 HTTP 服务器用于服务网页请求
+
+ 开发服务器，用来自动化 （自动编译， 自动打开浏览器， 热部署），contentBase配置 DevServer HTTP 服务器的文件根目录。 默认情况下为当前执行目录，通常是项目根目录
+
+## Devtool
+
+`devtool` 配置 Webpack 如何生成 Source Map，默认值是 `false` 即不生成 Source Map
+
+```js
+module.export = {
+  devtool: 'source-map'
+}
+```
+
+## Externals
+
+Externals 用来告诉 Webpack 要构建的代码中使用了哪些不用被打包的模块
+
 ## webpack工作流程
 
 ![71b263000fa](D:\图片\71b263000fa.jpg)
 
 1. 初始化参数：从配置文件和 Shell 语句中读取与合并参数,得出最终的参数
-2. 开始编译：用参数初始化Compiler对象，加载所有所有配置插件，执行Compiler对象的run方法开始编译
+2. 开始编译：用参数初始化Compiler对象，加载所有所有配置插件( 依次调用插件的 apply 方法，让插件可以监听后续的所有事件节点)，执行Compiler对象的run方法开始编译
 3. 确定入口： 根据entry找出所有入口文件
 4. 编译模块：调用配置loader对模块进行翻译转换
 5. 遍历 AST，收集依赖：对 模块进行转换后，再解析出当前 模块依赖的 模块
 6. 输出资源：根据入口和模块之间的依赖关系,组装成一个个包含多个模块的 Chunk，再把所有 Chunk 转换成文件输出
+
+Webpack 的构建流程可以分为以下三大阶段：
+
+1. 初始化：启动构建，读取与合并配置参数，加载 Plugin，实例化 Compiler。
+2. 编译：从 Entry 发出，针对每个 Module 串行调用对应的 Loader 去翻译文件内容，再找到该 Module 依赖的 Module，递归地进行编译处理。
+3. 输出：对编译后的 Module 组合成 Chunk，把 Chunk 转换成文件，输出到文件系统。
 
 ### Webpack配置
 
