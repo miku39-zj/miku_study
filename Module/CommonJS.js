@@ -17,26 +17,25 @@
 // module变量代表当前模块。这个变量是一个对象，它的exports属性（即module.exports）是对外的接口。
 // 加载某个模块，其实是加载该模块的module.exports属性
 
-// CommonJS模块的加载机制是，输入的是被输出的值的拷贝。也就是说，一旦输出一个值，模块内部的变化就影响不到这个值
+// CommonJS模块的加载机制是，输入的是被输出的值的拷贝(浅拷贝)。也就是说，一旦输出一个值，模块内部的变化就影响不到这个值
 var x = 5;
 var addX = function (value) {
   return value + x;
 }
+console.log(666666666);
 
-var count = 3;
+var count = 666;
 
 function initCounte() {
-  count++
+  count = 999
 }
 
 module.exports = {
-  count: count,
+  count: {value: count,name:"66"},
   initCounte: initCounte,
   x: x,
   addX: addX
 }
-
-console.log(123);
 
 // module.exports.x = x;
 // module.exports.addX = addX;
