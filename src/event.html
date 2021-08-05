@@ -1,0 +1,44 @@
+<!--
+ * 2021-08-04 08:41:05
+ * @create by: zj
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="div">
+    <button class="btn">
+      click
+    </button>
+  </div>
+</body>
+<script>
+  // element.addEventListener(event, function, useCapture)
+  // useCapture   可选。布尔值，指定事件是否在捕获或冒泡阶段执行。
+  // true - 事件句柄在捕获阶段执行
+  // false- false- 默认。事件句柄在冒泡阶段执行
+  const div = document.querySelector(".div")
+  const btn = document.querySelector(".btn")
+  div.addEventListener("click", function(){
+    console.log("div buffer");
+  })
+  btn.addEventListener("click", function() {
+    console.log("btn buffer"); 
+  })
+  div.addEventListener("click", function(){
+    console.log("div Capture");
+  },true)
+  btn.addEventListener("click", function() {
+    console.log("btn Capture"); 
+  },true)
+</script>
+
+</html>

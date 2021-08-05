@@ -41,9 +41,25 @@ resolve:{
 
 模块转换器，将所有类型的文件转换为 webpack 能够处理的有效模块,运行时机，Loader运行在打包文件之前
 
+常见Loader:
+
+- `file-loader`：把文件输出到一个文件夹中，在代码中通过相对 URL 去引用输出的文
+- `babel-loader`：把 ES6 转换成 ES5
+- `css-loader`：加载 CSS，支持模块化、压缩、文件导入等特性
+- `style-loader`：把 CSS 代码注入到 JavaScript 中，通过 DOM 操作去加载 CSS
+- `vue-loader`：加载 Vue.js 单文件组件
+
 ### Plugin
 
 扩展插件，插件的范围包括,从打包优化和压缩,一直到重新定义环境中的变量，plugin在整个编译周期都起作用
+
+常见Plugin:
+
+- `ignore-plugin`：忽略部分文件
+- `html-webpack-plugin`：简化 HTML 文件创建 (依赖于 html-loader)
+- `terser-webpack-plugin`: 支持压缩 ES6 (Webpack4)
+- `mini-css-extract-plugin`: 分离样式文件，CSS 提取为独立文件，支持按需加载
+- `webpack-bundle-analyzer`: 可视化 Webpack 输出文件的体积
 
 ### mode
 
@@ -108,6 +124,8 @@ module.export = {
   devtool: 'source-map'
 }
 ```
+
+sourceMap：是一项将编译、打包、压缩后的代码映射回源代码的技术
 
 ## Externals
 
@@ -525,3 +543,27 @@ module.exports = {
 
 ## 优化
 
+## HMR(Hot Module Replacement)原理
+
+基于 `WDS (Webpack-dev-server)` 的模块热替换
+
+通过 HotModuleReplacementPlugin 或 --hot 开启
+
+有叫热更新，可以做到不用刷新浏览器而将新变更的模块替换掉旧的模块。
+
+## 文件指纹是什么
+
+文件指纹是打包后输出的文件名的后缀。
+
+`Hash`：和整个项目的构建相关，只要项目文件有修改，整个项目构建的 hash 值就会更改
+
+`Chunkhash`：和 Webpack 打包的 chunk 有关，不同的 entry 会生出不同的 chunkhash
+
+`Contenthash`：根据文件内容来定义 hash，文件内容不变，则 contenthash 不变
+
+
+js的文件指纹，output的filename设置 chunkhash
+
+css的文件指纹，设置MIniExtractPlugin的filename,用contenthash
+
+图片：设置file-loader的name，使用hash。

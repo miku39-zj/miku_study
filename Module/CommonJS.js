@@ -18,6 +18,8 @@
 // 加载某个模块，其实是加载该模块的module.exports属性
 
 // CommonJS模块的加载机制是，输入的是被输出的值的拷贝(浅拷贝)。也就是说，一旦输出一个值，模块内部的变化就影响不到这个值
+
+// 模块无论来一个文件里引用（require）多少次，模块永远是单例，只会运行一遍
 var x = 5;
 var addX = function (value) {
   return value + x;
@@ -31,7 +33,10 @@ function initCounte() {
 }
 
 module.exports = {
-  count: {value: count,name:"66"},
+  count: {
+    value: count,
+    name: "66"
+  },
   initCounte: initCounte,
   x: x,
   addX: addX
