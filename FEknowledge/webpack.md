@@ -22,6 +22,10 @@ webpack 的核心是用于现代 JavaScript 应用程序的**静态模块打包�
 
 解析，Resolve 配置 Webpack 如何寻找模块所对应的文件
 
+resolve 流程开始的入口在 factory 阶段，factory 事件会触发 NormalModuleFactory 中的函数
+
+NormalModuleFactory 中注册了 resolver 事件
+
 ```js
 // Webpack alias 配置
 resolve:{
@@ -545,6 +549,19 @@ module.exports = {
 
 ## HMR(Hot Module Replacement)原理
 
+```js
+const webpack = require('webpack');
+module.exports = {
+    //....
+    devServer: {
+        hot: true
+    },
+    plugins: [
+        new webpack.HotModuleReplacementPlugin() //热更新插件
+    ]
+}
+```
+
 基于 `WDS (Webpack-dev-server)` 的模块热替换
 
 通过 HotModuleReplacementPlugin 或 --hot 开启
@@ -567,3 +584,18 @@ js的文件指纹，output的filename设置 chunkhash
 css的文件指纹，设置MIniExtractPlugin的filename,用contenthash
 
 图片：设置file-loader的name，使用hash。
+
+## Tapable
+
+webpack 整个编译过程中暴露出来大量的 Hook 供内部/外部插件使用,
+
+ Tapable 提供了很多类型的 Hook
+
+- **BasicHook**: 执行每一个，不关心函数的返回值，有 SyncHook、AsyncParallelHook、AsyncSeriesHook
+- **BailHook**: 顺序执行 Hook，遇到第一个结果 result !== undefined 则返回，不再继续执行。有：SyncBailHook、AsyncSeriseBailHook, AsyncParallelBailHook。
+- **WaterfallHook**: 类似于 reduce，如果前一个 Hook 函数的结果 result !== undefined，则 result 会作为后一个 Hook 函数的第一个参数。既然是顺序执行，那么就只有 Sync 和 AsyncSeries 类中提供这个Hook：SyncWaterfallHook，AsyncSeriesWaterfallHook
+- **LoopHook**: 不停的循环执行 Hook，直到所有函数结果 result === undefined。同样的，由于对串行性有依赖，所以只有 SyncLoopHook 和 AsyncSeriseLoopHook（PS：暂时没看到具体使用 Case）
+
+原理
+
+hook 事件注册 ——> hook 触发 ——> 生成 hook 执行代码 ——> 执行

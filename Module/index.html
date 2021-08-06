@@ -1,4 +1,6 @@
 <!--
+ * 2021-07-13 19:02:32
+ * @create by: zj
  * @Description: 
 -->
 <!DOCTYPE html>
@@ -15,11 +17,19 @@
   <script type="text/javascript" src="module.js"></script>
   <!-- 通过script标签引入 -->
   <script type="text/javascript">
-    myModule.foo()
-    myModule.bar()
-    console.log(myModule.data) //undefined 不能访问模块内部数据
-    myModule.data = 'xxxx' //不是修改的模块内部的data
-    myModule.foo() //没有改变
+    // myModule.foo()
+    // myModule.bar()
+    // console.log(myModule.data) //undefined 不能访问模块内部数据
+    // myModule.data = 'xxxx' //不是修改的模块内部的data
+    // myModule.foo() //没有改变
+    // es6 module
+    import {
+      obj
+    } from './es6Module'
+
+    console.log(obj.name);
+    obj.name = "yui"
+    console.log(obj.name);
   </script>
 </body>
 
