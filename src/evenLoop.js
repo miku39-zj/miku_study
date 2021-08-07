@@ -5,6 +5,8 @@
  */
 // 事件循环是js实现异步的一种方法，也是js的执行机制。
 
+
+
 // javascript是一门单线程语言
 // js任务分为： 同步任务和异步任务
 // 同步任务都在主线程上执行，形成一个执行栈
@@ -51,23 +53,6 @@ new Promise(resolve => {
 
 console.log('end');
 
-// nodejs Event Loop
-// Node会先执行所有类型为 timers 的 MacroTask，然后执行所有的 MicroTask(NextTick例外)
-
-// 进入 poll 阶段，执行几乎所有 MacroTask，然后执行所有的 MicroTask
-
-// 再执行所有类型为 check 的 MacroTask，然后执行所有的 MicroTask
-
-// 再执行所有类型为 close callbacks 的 MacroTask，然后执行所有的 MicroTask
-
-// 至此，完成一个 Tick，回到 timers 阶段
-
-// 定时器检测阶段(timers)：本阶段执行 timer 的回调，即 setTimeout、setInterval 里面的回调函数。
-// I/O事件回调阶段(I/O callbacks)：执行延迟到下一个循环迭代的 I/O 回调，即上一轮循环中未被执行的一些I/O回调。
-// 闲置阶段(idle, prepare)：仅系统内部使用。
-// 轮询阶段(poll)：检索新的 I/O 事件;执行与 I/O 相关的回调（几乎所有情况下，除了关闭的回调函数，那些由计时器和 setImmediate() 调度的之外），其余情况 node 将在适当的时候在此阻塞。
-// 检查阶段(check)：setImmediate() 回调函数在这里执行
-// 关闭事件回调阶段(close callback)：一些关闭的回调函数，如：socket.on('close', ...)。
 
 
 // node 和 浏览器 eventLoop的主要区别
