@@ -605,6 +605,183 @@ module.exports = {
 
 ## 优化
 
+### 分析：
+
+1.`webpack-bundle-analyzer`打包大小分析
+
+```js
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+module.exports = {
+    plugins: [
+        new BundleAnalyzerPlugin(),
+    ]
+}
+```
+
+2.`speed-measure-webpack-plugin`插件可以测量各个插件和`loader`所花费的时间
+
+```js
+//webpack.config.js
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+const smp = new SpeedMeasurePlugin();
+
+const config = {
+    //...webpack配置
+}
+module.exports = smp.wrap(config);
+```
+
+### 优化打包速度
+
+1、`thread-loader`（webpack4 官方推荐） 开启多进程打包： **仅在耗时的 loader 上使用。**
+
+```js
+module.exports = {
+  // ...
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        // 创建一个 js worker 池
+        use: [ 
+          'thread-loader',
+          'babel-loader'
+        ] 
+      },
+    ]
+  }
+}
+
+```
+
+2、cache-loader 利用缓存： 将结果缓存到磁盘里，显著提升二次构建速度
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.ext$/,
+        use: ['cache-loader', ...loaders],
+        include: path.resolve('src'),
+      },
+    ],
+  },
+};
+```
+
+3、 HardSourceWebpackPlugin
+
+```js
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
+const clientWebpackConfig = {
+  // ...
+  plugins: [
+    new HardSourceWebpackPlugin({
+      // cacheDirectory是在高速缓存写入。默认情况下，将缓存存储在node_modules下的目录中
+      // 'node_modules/.cache/hard-source/[confighash]'
+      cacheDirectory: path.join(__dirname, './lib/.cache/hard-source/[confighash]'),
+      // configHash在启动webpack实例时转换webpack配置，
+      // 并用于cacheDirectory为不同的webpack配置构建不同的缓存
+      configHash: function(webpackConfig) {
+        // node-object-hash on npm can be used to build this.
+        return require('node-object-hash')({sort: false}).hash(webpackConfig);
+      },
+      // 当加载器、插件、其他构建时脚本或其他动态依赖项发生更改时，
+      // hard-source需要替换缓存以确保输出正确。
+      // environmentHash被用来确定这一点。如果散列与先前的构建不同，则将使用新的缓存
+      environmentHash: {
+        root: process.cwd(),
+        directories: [],
+        files: ['package-lock.json', 'yarn.lock'],
+      },
+      // An object. 控制来源
+      info: {
+        // 'none' or 'test'.
+        mode: 'none',
+        // 'debug', 'log', 'info', 'warn', or 'error'.
+        level: 'debug',
+      },
+      // Clean up large, old caches automatically.
+      cachePrune: {
+        // Caches younger than `maxAge` are not considered for deletion. They must
+        // be at least this (default: 2 days) old in milliseconds.
+        maxAge: 2 * 24 * 60 * 60 * 1000,
+        // All caches together must be larger than `sizeThreshold` before any
+        // caches will be deleted. Together they must be at least this
+        // (default: 50 MB) big in bytes.
+        sizeThreshold: 50 * 1024 * 1024
+      },
+    }),
+    new HardSourceWebpackPlugin.ExcludeModulePlugin([
+      {
+        test: /.*\.DS_Store/
+      }
+    ]),
+  ]
+}
+```
+
+4、webpack4 默认内置使用 `terser-webpack-plugin` 插件压缩优化代码
+
+```js
+module.exports = {
+  optimization: {
+    minimizer: [
+      new TerserPlugin({
+        parallel: true,
+      }),
+    ],
+  },
+};
+```
+
+5、抽离第三方模块，使用`DllPlugin DllReferencePlugin`进行抽离
+
+```js
+// webpack.dll.config.js
+const path = require("path");
+const webpack = require("webpack");
+module.exports = {
+  // 你想要打包的模块的数组
+  entry: {
+    vendor: ['vue','element-ui'] 
+  },
+  output: {
+    path: path.resolve(__dirname, 'static/js'), // 打包后文件输出的位置
+    filename: '[name].dll.js',
+    library: '[name]_library' 
+     // 这里需要和webpack.DllPlugin中的`name: '[name]_library',`保持一致。
+  },
+  plugins: [
+    new webpack.DllPlugin({
+      path: path.resolve(__dirname, '[name]-manifest.json'),
+      name: '[name]_library', 
+      context: __dirname
+    })
+  ]
+};
+//package.json
+"dll": "webpack --config build/webpack.dll.config.js"
+//webpack.config.js
+
+module.exports = {
+  plugins: [
+    new webpack.DllReferencePlugin({
+      context: __dirname,
+      manifest: require('./vendor-manifest.json')
+    }),
+    new CopyWebpackPlugin([ // 拷贝生成的文件到dist目录 这样每次不必手动去cv
+      {from: 'static', to:'static'}
+    ]),
+  ]
+};
+
+```
+
+
+
 ## HMR(Hot Module Replacement)原理  ??????
 
 [webpack-dev-server](https://github.com/webpack/webpack-dev-server) 和 [webpack-dev-middleware](https://github.com/webpack/webpack-dev-middleware) 里 Watch 模式默认开启。
@@ -644,7 +821,7 @@ module.exports = {
 
 叫热更新，可以做到不用刷新浏览器而将新变更的模块替换掉旧的模块。
 
-### 服务端主要分为四个关键点
+**服务端主要分为四个关键点**
 
 - 通过webpack创建compiler实例，webpack在watch模式下编译
 
@@ -658,7 +835,7 @@ module.exports = {
 
 - 创建websocket服务：建立本地服务和浏览器的双向通信；每当有新的编译，立马告知浏览器执行热更新逻辑
 
-### 客户端主要分为两个关键点
+**客户端主要分为两个关键点**
 
 - 创建一个 websocket客户端 连接 websocket服务端，websocket客户端监听 `hash` 和 `ok` 事件
 - 主要的热更新客户端实现逻辑，浏览器会接收服务器端推送的消息，如果需要热更新，浏览器发起http请求去服务器端获取新的模块资源解析并局部刷新页面（这本是HotModuleReplacementPlugin帮我们做了，他将HMR 运行时代码注入到chunk中了，但是我会带大家实现这个 `HMR runtime`）
@@ -705,3 +882,17 @@ webpack 整个编译过程中暴露出来大量的 Hook 供内部/外部插件�
 hook 事件注册 ——> hook 触发 ——> 生成 hook 执行代码 ——> 执行
 
 # Bable
+
+Babel 是一个工具链，主要用于将 ECMAScript 2015+ 版本的代码转换为向后兼容的 `JavaScript` 语法，以便能够运行在当前和旧版本的浏览器或其他环境中：
+
+主要功能
+
+- 语法转换
+- 通过 `Polyfill` 方式在目标环境中添加缺失的特性 (通过 `@babel/polyfill` 模块)
+- 源码转换 (`codemods`)
+
+主要模块
+
+- `@babel/parser`：负责将代码解析为抽象语法树
+- `@babel/traverse`：遍历抽象语法树的工具，我们可以在语法树中解析特定的节点，然后做一些操作
+- `@babel/core`：代码转换，如ES6的代码转为ES5的模式

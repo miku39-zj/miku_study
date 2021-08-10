@@ -13,8 +13,78 @@
 1. 当组件初始化的时候，`computed` 和 `data` 会分别建立各自的响应系统，`Observer`遍历 `data` 中每个属性设置 `get/set` 数据拦截
 
 2. 初始化 `computed` 会调用 `initComputed` 函数
-   1. 注册一个 `watcher` 实例，并在内实例化一个 `Dep` 消息订阅器用作后续收集依赖
-   2. 调用计算属性时会触发其`Object.defineProperty`的`get`访问器函
+   1. 注册一个 `watcher` 实例，
+   
+      ```js
+      // state.js
+      function initComputed (vm: Component, computed: Object) {
+          const watchers = vm._computedWatchers = Object.create(null)
+          const userDef = computed[key]
+          const getter = typeof userDef === 'function' ? userDef : userDef.get
+      	watchers[key] = new Watcher(
+              vm,
+              getter || noop,
+              noop,
+              computedWatcherOptions  //lazy: true
+            )
+      }
+      // watcher.js
+      class Watcher {
+      	constructor () {
+              this.dirty = this.lazy
+              if (typeof expOrFn === 'function') {
+           		this.getter = expOrFn //函数
+          	}
+              this.value = this.lazy
+            ? undefined // computed不执行
+            : this.get() //执行get
+         }
+      }
+      ```
+   
+   2. 定义createComputedGetter，通过Object.defineProperty(target, key, sharedPropertyDefinition)去拦截，当通过this.key来获取时，会通过`watcher.evaluate()`来重新计算值，并调用`watcher.depend()`来添加`dep`订阅
+   
+      ```js
+      export function defineComputed (
+        target: any,
+        key: string,
+        userDef: Object | Function
+      ) {
+        sharedPropertyDefinition.get = shouldCache
+            ? createComputedGetter(key)
+            : createGetterInvoker(userDef)
+        Object.defineProperty(target, key, sharedPropertyDefinition)
+      }
+      function createComputedGetter (key) {
+        return function computedGetter () {
+          const watcher = this._computedWatchers && this._computedWatchers[key]
+          if (watcher) {
+            if (watcher.dirty) { //脏数据
+              watcher.evaluate()//重新计算
+            }
+            if (Dep.target) {
+              watcher.depend() // 添加dep订阅
+            }
+            return watcher.value
+          }
+        }
+      }
+      
+      //watcher.js
+      evaluate () {
+          this.value = this.get() //执行getter
+          this.dirty = false // dirty为false
+      }
+      
+      depend () {
+          let i = this.deps.length
+          while (i--) {
+            this.deps[i].depend() //添加订阅
+          }
+      }
+      ```
+   
+      
 3. 当某个属性发生变化，触发 `set` 拦截函数，然后调用自身消息订阅器 `dep` 的 `notify` 方法，遍历当前 `dep` 中保存着所有订阅者 `wathcer` 的 `subs` 数组，并逐个调用 `watcher` 的  `update` 方法，完成响应更新。
 
    
