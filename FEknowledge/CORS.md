@@ -63,3 +63,35 @@ jsonp({
 ```
 
 ### `CORS`
+
+`CORS`全称**跨域资源共享**。它允许浏览器向跨源服务器，发请求，浏览器会自动进行 `CORS` 通信，实现 `CORS `通信的关键是后端
+
+服务端设置`Access-Control-Allow-Origin`就可以开启`CORS`，该属性表示哪些域名可以访问资源
+
+在请求时有两种情况,分为**简单请求**和**非简单请求**
+
+**简单请求**
+
+满足以下条件的就是简单请求：
+
+- 请求方式为`GET`、`POST`或`HEAD`
+- `http`头信息不超出，`Accept`、`Accept-Language` 、 `Content-Language`、 `Last-Event-ID`、 `☆ Content-Type`(限于三个值：`application/x-www-form-urlencoded`、`multipart/form-data`、`text/plain`)
+
+简单请求的具体实现：在请求是加入一个`Origin`字段
+
+```
+GET /cors HTTP/1.1
+Origin: http://wang.com
+```
+
+Origin的作用就是说嘛本次请求来自哪个源，服务器会根据`Origin`的值来判断是否接受本次请求
+
+服务端设置：`Access-Control-Allow-Origin`,表示接受哪些域名的请求
+
+**非简单请求(复杂请求)**
+
+就是不满足简单请求的
+
+像请求方法为`PUT`或`DELETE`,或者`Content-Type`为`application/json`
+
+复杂请求会是发起一个预检请求
