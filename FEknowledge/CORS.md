@@ -92,6 +92,39 @@ Origin的作用就是说嘛本次请求来自哪个源，服务器会根据`Orig
 
 就是不满足简单请求的
 
-像请求方法为`PUT`或`DELETE`,或者`Content-Type`为`application/json`
+像请求方法为`PUT`或`DELETE`,或者`Content-Type`为`application/json`，或在请求头中添加了自定义的字段
 
-复杂请求会是发起一个预检请求
+复杂请求会是发起一个预检请求，该请求是`option`方法
+
+```js
+var url = 'http://api.wang.com/cors';
+var xhr = new XMLHttpRequest();
+xhr.open('PUT', url, true);
+xhr.setRequestHeader('X-Custom-Header', 'value');
+xhr.send();
+```
+
+该请求就是一个复杂请求，当浏览器发现这是个复杂请求之后，会主动发出一个预检请求，询问服务器是否允许本次请求
+
+这个预检请求里，头信息除了有表明来源的 `Origin` 字段外，还会有一个 `Access-Control-Request-Method` 字段和 `Access-Control-Request-Headers` 字段，它们分别表明了该浏览器 `CORS` 请求用到的 `HTTP` 请求方法和指定浏览器 `CORS` 请求会额外发送的头信息字段
+
+服务器收到后会判断是该域名是否在白名单里，如果在才会发起请求
+
+### 代理
+
+ `webpack` 配置
+
+```
+module.exports = {
+  //...
+  devServer: {
+    proxy: {
+      '/api': 'http://www.hahaha.com'
+    }
+  }
+}
+```
+
+### websocket
+
+`Websocket`是`HTML5`的一个持久化的协议，它实现了浏览器与服务器的全双工通信，同时也是跨域的一种解决方案。`WebSocket`和`HTTP`都是应用层协议，都基于 `TCP `协议。但是 `**WebSocket `是一种双向通信协议，在建立连接之后，`WebSocket `的 `server `与 `client` 都能主动向对方发送或接收数据**。同时，`WebSocket `在建立连接时需要借助 `HTTP` 协议，连接建立好了之后 `client` 与 `server` 之间的双向通信就与 `HTTP `无关了
