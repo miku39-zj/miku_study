@@ -51,10 +51,30 @@ resolve:{
 
 常见Loader:
 
-- `file-loader`：把文件输出到一个文件夹中，在代码中通过相对 URL 去引用输出的文
+- `file-loader`：把文件输出到一个文件夹中，在代码中通过相对 URL 去引用输出的文 **v5 版本已废弃**
+
+  ```js
+  //raw-loader 将文件导入为字符串
+  //url-loader 将文件作为 data URI 内联到 bundle 中
+  //file-loader 将文件发送到输出目录
+  //转成
+  // 资源模块(asset module)是一种模块类型
+  module: {
+    rules: [
+      {
+        test: /\.png/,
+       type: 'asset/resource'
+      }
+    ]
+  },
+  ```
+
 - `babel-loader`：把 ES6 转换成 ES5
+
 - `css-loader`：加载 CSS，支持模块化、压缩、文件导入等特性
+
 - `style-loader`：把 CSS 代码注入到 JavaScript 中，通过 DOM 操作去加载 CSS
+
 - `vue-loader`：加载 Vue.js 单文件组件
 
 loader特点：
@@ -75,7 +95,9 @@ loader特点：
 - `html-webpack-plugin`：简化 HTML 文件创建 (依赖于 html-loader)
 - `terser-webpack-plugin`: 支持压缩 ES6 (Webpack4)
 - `mini-css-extract-plugin`: 分离样式文件，CSS 提取为独立文件，支持按需加载
+- `optimize-css-assets-webpack-plugin`:实现css压缩
 - `webpack-bundle-analyzer`: 可视化 Webpack 输出文件的体积
+- `postcss-loader autoprefixer`：自动添加浏览器前缀
 
 ### mode
 
@@ -196,6 +218,13 @@ module.export = {
 ```
 
 sourceMap：是一项将编译、打包、压缩后的代码映射回源代码的技术
+
+这个配置主要是`debug`用的，配置选项有很多，这里挑选4个说明。
+
+- `source-map` 生成`map`文件，定位到行列
+- `eval-source-map` 不生成`map`文件，定位到行列
+- `cheap-module-source-map` 生成`map`文件，定位到行
+- `cheap-module-eval-source-map` 不生成`map`文件，定位到行
 
 ## Externals
 
@@ -901,6 +930,21 @@ Tapable 提供了 tap/tapAsync/tapPromise 这三个注册事件的方法
 **事件触发**
 与 tap/tapAsync/tapPromise 相对应的，Tapable 中提供了三种触发事件的方法 call/callAsync/promise。
 
+
+
+## 路由懒加载原理
+
+link标签导入资源： 
+
+- `ref=preload`：告诉浏览器这个资源要给我提前加载。
+- `rel=prefetch`：告诉浏览器这个资源空闲的时候给我加载一下。
+- `as=script`：告诉浏览器这个资源是script，提升加载的优先级。
+
+import('./hello.js')`被编译成了__webpack_require__.e("src_hello_js.js").then(__webpack_require__.t.bind(__webpack_require__, "./src/hello.js"))
+
+该方法主要功能就是根据传入的`chunkId`使用`jsonp`去拉取对应的模块代码。这里它返回了一个`promise`，并将`resolve`放到了全局`installedChunks`对象上。因为这里不能确定`jsonp`什么时候成功，所以无法调用`resolve`，只能将它挂载到全局变量中
+
+webpack打包的时候，碰到import()这种函数，就会把里面对应的文件单独打包成js，然后通过script异步加载这个js，这样就实现了异步懒加载
 
 # Bable
 
