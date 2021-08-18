@@ -1,35 +1,16 @@
-/*
- * 2021-08-06 11:58:54
- * @create by: zj
- * @Description: 
- */
-// >>>0  无符号位移   第一个操作数向右移动指定的位数。向右被移出的位被丢弃，左侧用0填充。
-// 1 . 如果不能转换为Number，那就为0
-// 2 . 如果为非整数，先转换为整数，
+# 排序算法整理
 
-function func() {
-  const miku = "miku"
+## 1.冒泡排序
 
-  function func2() {
-    let yui = "yui"
-
-    function func3() {
-      var mio = "mio"
-      console.log(miku);
-    }
-    return func3
-  }
-  return func2
-}
-// func()()()
-
+```js
 function bubbleSort(arr) {
   const n = arr.length;
   let flag = true
   for (let i = 0; i < n; i++) {
     for (let j = 0; j < n - i; j++) {
       if (arr[j] > arr[j + 1]) {
-        flag = false[arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]
+        flag = false
+        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]
       }
     }
     if (flag) {
@@ -38,8 +19,12 @@ function bubbleSort(arr) {
   }
   return arr
 }
+console.log(bubbleSort([1,3,2,5,6,4]));
+```
 
+## 2.选择排序
 
+```js
 function selectSort(arr) {
   const n = arr.length
   let minI
@@ -54,20 +39,29 @@ function selectSort(arr) {
   }
   return arr
 }
+console.log(selectSort([1, 3, 2, 5, 6, 4]));
+```
 
-function insertSort(arr) {
+## 3.插入排序
+
+```js
+function insertSort (arr) {
   const n = arr.length
   for (let i = 1; i < n; i++) {
     let j = i
-    while (j > 0 && arr[j - 1] > arr[j]) {
-      [arr[j - 1], arr[j]] = [arr[j], arr[j - 1]]
+    while (j > 0 && arr[j-1] > arr[j]) {
+      [arr[j-1], arr[j]] = [arr[j], arr[j-1]]
       j--
     }
   }
   return arr
 }
+console.log(insertSort([1, 3, 2, 5, 6, 4]));
+```
 
+## 4.归并排序
 
+```js
 function mergeSort(arr) {
   const merge = function (left, right) {
     const ln = left.length,
@@ -103,11 +97,8 @@ function mergeSort(arr) {
     right = arr.slice(mid)
   return merge(mergeSort(left), mergeSort(right))
 }
-
-function quickSort (arr) {
-  const n = arr.length
-  const quick = function (left, right) {
-    
-  }
-}
 console.log(mergeSort([1, 3, 2, 5, 6, 4]));
+```
+
+## 5.快速排序
+
