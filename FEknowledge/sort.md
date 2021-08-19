@@ -102,3 +102,51 @@ console.log(mergeSort([1, 3, 2, 5, 6, 4]));
 
 ## 5.快速排序
 
+```js
+function quickSort (arr) {
+	const n = arr.length;
+    const quick = function(left, right) {
+		if (left >= right) {
+            return arr
+        }
+        const mid = left;
+        let i = left, j = right
+        while(i < j) {
+			while(i < j && arr[i] < arr[mid]) {
+                i++
+            }
+            while(i < j && arr[j] >= arr[mid]) {
+                j--
+            }
+            [arr[i], arr[j]] = [arr[j], arr[i]]
+        }
+        [arr[mid], arr[i]] = [arr[i], arr[mid]]
+        quick(left, i-1)
+        quick(i+1, right)
+        return arr
+    }
+    return quick(0, n-1)
+}
+```
+
+## 6.桶排序
+
+```js
+function bucketSort (arr) {
+	const n = arr.length
+    const max = Math.max(...arr)
+    const bucket = new Array(max+1).fill(0)
+    for (let i = 0; i < n; i++) {
+        bucket[arr[i]]++
+    }
+    const res = []
+    for (let i = 0; i < max + 1; i++) {
+        while(bucket[i]) {
+			res.push(i)
+            bucket[i]--
+        }
+    }
+    return res
+}
+```
+

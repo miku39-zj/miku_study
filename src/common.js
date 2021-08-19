@@ -7,6 +7,14 @@
 // 1 . 如果不能转换为Number，那就为0
 // 2 . 如果为非整数，先转换为整数，
 
+// 判断 一个 obj 是一个数组 
+
+// Array.prototype.isPrototypeOf([])
+// [] instanceof Array
+// [].constructor === Array
+// [].__proto__ === Array.prototype
+//Object.prototype.toString.call([]).slice(8,-1)
+
 function func() {
   const miku = "miku"
 
@@ -79,7 +87,7 @@ function mergeSort(arr) {
       if (left[lp] <= right[rp]) {
         res.push(left[lp])
         lp++
-      }else {
+      } else {
         res.push(right[rp])
         rp++
       }
@@ -104,10 +112,48 @@ function mergeSort(arr) {
   return merge(mergeSort(left), mergeSort(right))
 }
 
-function quickSort (arr) {
-  const n = arr.length
+function quickSort(arr) {
+  const n = arr.length - 1
   const quick = function (left, right) {
-    
+    if (left >= right) {
+      return arr
+    }
+    const mid = left
+    let i = left,
+      j = right
+    while (i < j) {
+      while (i < j && arr[i] < arr[mid]) {
+        i++
+      }
+      while (i < j && arr[j] >= arr[mid]) {
+        j--
+      }
+      [arr[i], arr[j]] = [arr[j], arr[i]]
+    }
+    [arr[mid], arr[i]] = [arr[i], arr[mid]]
+    quick(left, i-1)
+    quick(i + 1, right)
+    return arr
   }
+  return quick(0, n)
 }
-console.log(mergeSort([1, 3, 2, 5, 6, 4]));
+
+
+function bucketSort (arr) {
+  const n = arr.length
+  const max = Math.max(...arr)
+  const bucket = new Array(max + 1).fill(0)
+  for (let i = 0; i < n; i++) {
+    bucket[arr[i]]++
+  }
+  let res = []
+  for(let i = 0; i< max + 1; i++) {
+    while(bucket[i]) {
+      res.push(i)
+      bucket[i]--
+    }
+  }
+  return res
+}
+const res = bucketSort([1, 3, 2, 3, 6, 4])
+console.log(res);
