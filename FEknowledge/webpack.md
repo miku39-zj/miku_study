@@ -63,7 +63,7 @@ resolve:{
     rules: [
       {
         test: /\.png/,
-       type: 'asset/resource'
+        type: 'asset/resource'
       }
     ]
   },

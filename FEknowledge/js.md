@@ -2,6 +2,8 @@
 
 # JavaScript
 
+测试 ： `test262`
+
 ## 1.`Source Code`:
 
 `'\t'.codePointAt() 在unicode里的位置  .toString(16)`
@@ -93,13 +95,160 @@ for (var i = 0; i < 5; i++) {
 
 ## 4.`Type Convertion(类型转换)`
 
-|          | `Number` | `String` | `Boolean` | `Undefinede` | `Null` | `Object` | `Symbol` |
-| -------- | -------- | -------- | --------- | ------------ | ------ | -------- | -------- |
-| `Number` |          |          |           |              |        |          |          |
-|          |          |          |           |              |        |          |          |
-|          |          |          |           |              |        |          |          |
-|          |          |          |           |              |        |          |          |
-|          |          |          |           |              |        |          |          |
-|          |          |          |           |              |        |          |          |
-|          |          |          |           |              |        |          |          |
+|             | `Number`             | `String`            | `Boolean`  | `Undefinede` | `Null` | `Object` | `Symbol` |
+| ----------- | -------------------- | ------------------- | ---------- | ------------ | ------ | -------- | -------- |
+| `Number`    |                      |                     | 0 `false`  |              |        | `Boxing` |          |
+| `String`    |                      |                     | "" `false` |              |        | `Boxing` |          |
+| `Boolean`   | `true`  1  `false `0 | `'true'` `'false'`  |            |              |        | `Boxing` |          |
+| `Undefined` | NaN                  | `'Undefined'`       | false      |              |        |          |          |
+| `Null`      | 0                    | `'null'`            | false      |              |        |          |          |
+| `Object`    | valueOf              | `valueOf  toString` |            |              |        |          |          |
+| `Symbol`    |                      |                     |            |              |        | `Boxing` |          |
 
+### `Boxing & Unboxing (装箱拆箱)`
+
+`Number,String, Boolean, Symbol`四种基本类型 有对应的`class`包装类型,将基本类型转成包装类型叫`Boxing`装箱
+
+7种基本类型， 在`Object`里有不同的 类 ：`Number,String, Boolean typeof 为 object`类对应 `number string boolean`类型
+
+`new Number(1)`会包装成一个对象,`Number(1)`生成普通类型的（强制类型转换），`Object("12")`强制装箱
+
+`Symbol("1")`装箱 `Object(Symbol("1"))` ，`(function(){return this}).apply(Symbol("1"))`
+
+`Unboxing`拆箱
+
+```js
+1 + {}
+1 + {[Symbol.toPrimitive](){return 6} valueOf() {return 1}, toString() {return "2"}}
+// 优先级 Symbol.toPrimitive最高 valueOf toString
+
+生成 数字
+function coverStringToNumber(str, x) {
+	var chars = str.split('');
+    var number = 0
+    var i = 0 
+    while (vi < chars.length; && chars[i] != '.') { // 整数部分
+		number = number*x;
+         number += chars[i].codePointAt(0) - '0'.codePointAt(0);
+    }
+    if (chars[i] == '.') {
+		i++;
+    }
+    var fraction = 1; //小数部分
+    while(i < chars.length) {
+        fraction = fraction /x;
+        number += （chars[i].codePointAt(0) - '0'.codePointAt(0)）* fraction
+        i++
+    }
+    fraction = fraction /x;
+    return number + fraction
+}
+```
+
+## 5.Statements(语句)
+
+`ExpressionStatement,Block ,LabelledStatement(标签), IterationStatement, `  `[[type]]: return throw(运行时错误)`
+
+### `Iteration`:
+
+### `while, for( ; ;), for( in ), for( of )`
+
+```js
+for (let i = 0; i< 10; i++) {}
+for (let p in {a:1,b:2}) {console.log(p)} // a, b
+for(let p of [1, 2, 3]) {console.log(p)} // iterator机制 => Generator/Array
+
+try {
+	throw 2;
+} catch(e) {
+    //let e = 3; 会报错，生成一个作用域
+    console.log(e)
+}
+//作用域 一个声明的有效文本范围，变量作用范围，文本区域
+//执行上下文：存变量的地方，javascript引擎的一块内存
+```
+
+## 6.声明
+
+函数声明及var变量声明 会提升
+
+### FuntionDeclaration
+
+```js
+//函数声明
+funtion foo () {}
+class foo {}
+
+var foo = funtion foo () {} / funtion () {}
+var foo = class foo {} / class {}
+```
+
+### Generator
+
+```js
+function* foo () {
+    yield 1;
+    yield 2;
+}
+var foo = funtion* foo () {} / funtion () {}
+```
+
+### asyncFunction
+
+```js
+function sleep(d) {
+	return new Promise(resolve=> setTimeout(resolve, d))
+}
+void async function() {
+	var i = 0;
+    while(true) {
+		console.log(i++)
+        await sleep(1000)
+    }
+}
+```
+
+### asyncGeneration
+
+```js
+async function* foo() {
+    var i = 0;
+    while(true) {
+		yield i++;
+        await sleep(1000)
+    }
+}
+void async function() {
+	var g = foo()
+    for await(let e of g){
+		console.log(e)	
+    }
+}()
+```
+
+### VariableStatement（变量声明）
+
+## 7.Object
+
+唯一标识(对象指针)，状态 (行为变化 成员变量)， 行为(成员函数)
+
+面向对象：1. `Object-Class` 基于类面向对象的    2.`Object-Prototype` 基于原型面向对象
+
+`javaScript `：`Object ` 运行时 , 只关心原型和属性两部分
+
+```js
+// Object 属性 是一个 key ,value 对
+key: Symbol 、 String
+value: 数据型属性， 访问型属性
+数据型属性：[[value]], writable, enumerable, configurable
+访问型属性： get set,enumerable,configurable
+访问属性 会 沿着 原型链 一直往上找 直到null
+// Object Api
+1. Object.defineProperty
+2.Object.create/Object.setPrototypeOf/Object.getPrototypeOf
+3.new/class/extends
+
+内置对象
+```
+
+### Function  Object
