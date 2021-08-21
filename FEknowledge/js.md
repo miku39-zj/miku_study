@@ -91,6 +91,9 @@ for (var i = 0; i < 5; i++) {
 
 //Logical 短路逻辑
 //&& || 不会 类型转换
+
+, 逗号 永远返回后面的，优先级最低
+1, 2, 3 返回3
 ```
 
 ## 4.`Type Convertion(类型转换)`
@@ -252,3 +255,35 @@ value: 数据型属性， 访问型属性
 ```
 
 ### Function  Object
+
+
+
+## 8.执行机制
+
+`JS Context => Realm`
+
+```
+Realm Global: 所有对象
+TypeError,Math, Array, isNaN,Math,Date,Map,Proxy,Promise,Reflet.....
+```
+
+宏任务并不在js引擎(js标准)内，
+
+任务列表里有很多宏任务，每个宏任务里有个微任务列表，每个宏任务在执行第二个宏任务之前，会把自己里的微任务执行完
+
+微任务：
+
+`async`函数 在 `await` 前都是同步代码, wait后面的函数执行完毕时，await会产生一个微任务(Promise.then是微任务)
+
+**执行上下文栈 Execution Context Stack**
+
+`Execution Context `执行上下文： `code evaluation state, Function , Script or Module, Realm, LexicalEnvironment, VariableEnvironment`
+
+`LexicalEnvironment`词法环境： 包含 `this, new.target, super, 变量`， 
+
+​	`Environment Record`环境记录
+
+`VariableEnvironment`变量环境， 处理 `var`声明
+
+`Clousure`
+
