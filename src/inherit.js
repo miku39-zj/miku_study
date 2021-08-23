@@ -43,7 +43,7 @@ function Sub(label) {
 Sub.prototype = new Sup()
 let obj1 = new Sub("hh")
 console.log(obj1.getName(),"原型链继承");
-// 问题1： 原型中包含的引用值在原型中共享
+// 问题1： 原型中包含的引用值在所有实例中共享
 // 问题2： 子类型在实例化时不能给父类构造函数传参
 
 // 盗用构造函数
