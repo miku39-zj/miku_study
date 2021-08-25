@@ -14,7 +14,11 @@
 
 `IP`: `包, IP地址， `
 
+`URL HTTP => HTML parse => DOM css computing => DOM with CSS layout => DOM with position render=> Bitmap `
+
 ## `HTTP`
+
+主要获取`HTML`
 
 文本协议，通过文本来发
 
@@ -30,4 +34,19 @@
 `<body>asdsadsa</body>`   body
 
 流的形式 ，  状态机
+
+### 有限状态机处理字符串
+
+**有限状态机：**每个状态都是一个机器
+
+- 在灭一个机器里，可以做计算、存储、输出
+- 所有机器接受的输入时一致的
+- 状态机的每一个机器本身没有状态，如果用函数来表示的化，它应该是纯函数
+
+每一个机器知道下一个状态
+
+- 每个机器都有确定的下一个状态（Moore）
+- 每个机器根据输入决定下一个状态（Mealy）
+
+## HTML解析
 

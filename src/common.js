@@ -14,22 +14,24 @@
 // [].constructor === Array
 // [].__proto__ === Array.prototype
 //Object.prototype.toString.call([]).slice(8,-1)
-
 function func() {
-  const miku = "miku"
-
+  const guang = 'guang';
   function func2() {
-    let yui = "yui"
-
-    function func3() {
-      var mio = "mio"
-      console.log(miku);
+    const ssh = 'ssh';
+    console.log(guang);
+    function func3 () {
+      console.log(guang);
+      console.log(ssh);
+      const suzhe = 'suzhe';
     }
-    return func3
+    return func3;
   }
-  return func2
+  return func2;
 }
-// func()()()
+
+const func2 = func();
+const func3 = func2();
+func3()
 
 function bubbleSort(arr) {
   const n = arr.length;
@@ -156,4 +158,12 @@ function bucketSort (arr) {
   return res
 }
 const res = bucketSort([1, 3, 2, 3, 6, 4])
-console.log(res);
+// console.log(res);
+
+// "use strict"
+var a = "默认";
+function foo() {
+  console.log(this.a,12321);
+}
+
+foo();
