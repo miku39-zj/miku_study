@@ -39,22 +39,32 @@ class MyPromise {
   }
   then(onFulfilled, onRejected) { //then接收两参数，onFulfilled, onRejected,当状态是FULFILLED执行onFulfilled 是rejected执行onRejected
     const promise2 = new MyPromise((resolve, reject) => {
-
+      if (this.status === FULFILLED) {
+        onFulfilled(this.value) //执行
+      } else if (this.status === REJECTED) {
+        onRejected(this.reason) //执行
+      } else if (this.status === PENDING) {
+        // 将回调存起来
+        this.onFulfilledCallback.push(onFulfilled)
+        this.onRejectedCallback.push(onRejected)
+      }
     })
-    if (this.status === FULFILLED) {
-      onFulfilled(this.value) //执行
-    } else if (this.status === REJECTED) {
-      onRejected(this.reason) //执行
-    } else if (this.status === PENDING) {
-      // 将回调存起来
-      this.onFulfilledCallback.push(onFulfilled)
-      this.onRejectedCallback.push(onRejected)
-    }
   }
   catch (reson) {
     if (this.status === REJECTED) {
       onRejected(this.reason) //执行
     }
+  }
+  finally (fn) {
+    return this.then(res => {
+      Promise.resolve(fn()).then(res => {
+        return res
+      })
+    },err => {
+      Promise.reject(fn()).then(err => {
+        throw err
+      })
+    })
   }
   // resolve 静态方法
   static resolve(parameter) {
@@ -76,7 +86,7 @@ class MyPromise {
   // 传入的所有 Promsie 都是 fulfilled，则返回由他们的值组成的，状态为 fulfilled 的新 Promise；
   static All(promiseArr) {
     return new MyPromise((resolve, reject) => {
-      if (Array.isArray(promiseArr)) {
+      if (!Array.isArray(promiseArr)) {
         return new TypeError("must be a array")
       }
       let counter = 0
@@ -139,10 +149,10 @@ class MyPromise {
       });
     })
   }
-//   Promise.any 的规则是这样：
-// 空数组或者所有 Promise 都是 rejected，则返回状态是 rejected 的新 Promsie，且值为 AggregateError 的错误；
-// 只要有一个是 fulfilled 状态的，则返回第一个是 fulfilled 的新实例；
-  static any (promiseArr) {
+  //   Promise.any 的规则是这样：
+  // 空数组或者所有 Promise 都是 rejected，则返回状态是 rejected 的新 Promsie，且值为 AggregateError 的错误；
+  // 只要有一个是 fulfilled 状态的，则返回第一个是 fulfilled 的新实例；
+  static any(promiseArr) {
     return new MyPromise((resolve, reject) => {
       if (Array.isArray(promiseArr)) {
         return new TypeError("")
@@ -151,8 +161,8 @@ class MyPromise {
       promiseArr.forEach(p => {
         MyPromise.resolve(p).then(val => {
           resolve(val)
-        },err => {
-          counter ++
+        }, err => {
+          counter++
           if (counter === promiseArr.length) {
             reject("all rejected")
           }
