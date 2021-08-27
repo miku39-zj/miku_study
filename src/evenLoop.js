@@ -12,7 +12,7 @@
 // 同步任务都在主线程上执行，形成一个执行栈
 // 当我们打开网站时，网页的渲染过程就是一大堆同步任务，比如页面骨架和页面元素的渲染。而像加载图片音乐之类占用资源大耗时久的任务，就是异步任务
 
-// macro-task(宏任务)：包括整体代码script，setTimeout，setInterval，requestAnimationFrame ()
+// macro-task(宏任务)：包括整体代码script，setTimeout，setInterval，requestAnimationFrame
 // 每次执行栈执行的代码就是一个宏任务（包括每次从事件队列中获取一个事件回调并放到执行栈中执行）,宏任务队列
 // micro-task(微任务)：Promise，process.nextTick， MutationObserver(html5新特性),queueMicrotask
 // 理解是在当前 宏任务 执行结束后立即执行的任务， 微任务队列

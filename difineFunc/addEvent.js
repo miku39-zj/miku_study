@@ -26,7 +26,7 @@ const handEvent = {
     if (event.stopPropagation) {
       event.stopPropagation()
     } else {
-      event.cancelBuuble = true
+      event.cancelBubble = true
     }
   },
   preventDefault: function (event) {
@@ -34,6 +34,13 @@ const handEvent = {
       event.preventDefault()
     }else {
       event.returnValue = false
+    }
+  },
+  getTarget: function(e) {
+    if(e.target) {
+      return e.target
+    }else {
+      return e.srcElement
     }
   }
 }

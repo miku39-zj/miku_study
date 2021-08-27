@@ -15,7 +15,7 @@ function add (a, b) {
     sum = parseInt(a[i])+parseInt(b[i]) + t;
     t = Math.floor(sum / 10)
     r = sum % 10
-    res += r
+    res = r + res
   }
   return res
 }

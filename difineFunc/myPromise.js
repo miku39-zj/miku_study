@@ -66,7 +66,7 @@ class MyPromise {
       })
     })
   }
-  // resolve 静态方法
+  // resolve 静态方法 返回一个 resolve后的promise
   static resolve(parameter) {
     // 如果传入 MyPromise 就直接返回
     if (parameter instanceof MyPromise) {
