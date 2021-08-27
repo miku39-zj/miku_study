@@ -61,6 +61,8 @@ HTTP/1.1 200 OK
 - GET比POST更不安全，因为参数直接暴露在URL上，所以不能用来传递敏感信息。
 - GET参数通过URL传递，POST放在Request body中
 
+get拼接url,post传body，get限制字符串长度吗！ 请求缓存：GET 会被缓存，而post不会 原因就是get是url的请求，没有请求体！上哪缓存去！ 收藏书签：GET可以，而POST不能 原因还是因为url可以收藏，请求体上哪收藏！ 保留浏览器历史记录：GET可以，而POST不能 原因还是因为get的url请求！ 用处：get常用于取回数据，post用于提交数据 原因是get的url传输不管怎么说，都是有字符数限制的！你用get提交个试试！如果字符串长度不超，一样能提交数据！ 安全性：post比get安全 还是因为post是请求体，不会在url上被劫持！ 请求参数：querystring 是url的一部分get、post都可以带上。 get的querystring（仅支持urlencode编码），post的参数是放在body（支持多种编码） 这一点知道了其它的不就明白一大堆了！ 请求参数长度限制：get请求长度最多1024kb，post对请求数据没有限制
+
 ## HTTP优缺点
 
 ### HTTP特点
@@ -205,7 +207,11 @@ Cache-Control:max-age=3600/no-cache
 
 浏览器接收ETag后,会在下次请求是，将这个值作为If-None-Match这个字段的内容，请求头会携带这个值，服务器接收到**If-None-Match**后，会跟服务器上该资源的**ETag**进行比对
 
+#### 启发式缓存
 
+只有在服务端没有返回明确的缓存策略时才会激活启发式缓存策略
+
+通常是 `Date` 和 `Last-Modified` 。此时，缓存有效期一般取两者差值的 10%
 
 ### 缓存位置
 

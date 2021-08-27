@@ -7,33 +7,15 @@
 let http = require("http")
 
 const server = http.createServer((req, res) => {
-  console.log("request received")
-  console.log(req.headers);
-  res.setHeader('Access-Control-Allow-Origin','*')
-  res.setHeader('Access-Control-Allow-Methods','PUT')
-  res.setHeader('Content-Type','text/html')
+  // console.log(req,"request received");
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'PUT')
+  res.setHeader('Cache-Control', 'max-age=120')
+  res.setHeader('Content-Type', 'application/json;charset=UTF-8')
   res.setHeader('X-Foo', 'bar')
-  res.writeHead(200, {'Content-type': 'text/plain'});
-  res.end(
-    `<html maaa=a >
-<head>
-    <style>
-body div #myid {
-  width: 100px;
-  background-color: #ff5000;
-}
-body div img {
-  width:30px;
-  background-color: #ff1111;
-}
-    </style>
-</head>
-<body>
-  <div>
-    <img id='myid'/>
-    <img/>
-  </div>
-</body>
-</html>`);
+  res.writeHead(200, {
+    'Content-type': 'text/plain'
+  });
+  res.end(`<div>6666</div>`)
 })
 server.listen(8088)
