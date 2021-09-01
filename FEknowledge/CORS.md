@@ -104,7 +104,7 @@ xhr.setRequestHeader('X-Custom-Header', 'value');
 xhr.send();
 ```
 
-该请求就是一个复杂请求，当浏览器发现这是个复杂请求之后，会主动发出一个预检请求，询问服务器是否允许本次请求
+该请求就是一个复杂请求，当浏览器发现这是个复杂请求之后，会主动发出一个预检请求(option请求)，询问服务器是否允许本次请求
 
 这个预检请求里，头信息除了有表明来源的 `Origin` 字段外，还会有一个 `Access-Control-Request-Method` 字段和 `Access-Control-Request-Headers` 字段，它们分别表明了该浏览器 `CORS` 请求用到的 `HTTP` 请求方法和指定浏览器 `CORS` 请求会额外发送的头信息字段
 

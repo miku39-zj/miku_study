@@ -40,6 +40,16 @@ Cookie是客户端保存用户信息的一种机制，用来记录用户的一�
 
 **cookie 是不可跨域的：** 每个 cookie 都会绑定单一的域名，无法在别的域名下获取使用，**一级域名和二级域名之间是允许共享使用的**（**靠的是 domain: 指定 cookie 所属域名，默认是当前域名）**
 
+`Cookie`组成：`NAME=VALUE`,`Domain = 域名``path=路径`
+
+`cookie`的`SameSite`属性用来限制第三方 `Cookie`，从而减少安全风险。
+
+设置三个值
+
+- Strict
+- Lax
+- None
+
 ## Session
 
 **session 是一种记录服务器和客户端会话状态的机制**
@@ -53,5 +63,5 @@ Cookie是客户端保存用户信息的一种机制，用来记录用户的一�
 ## Cookie和Session的区别
 
 -  Session 比 Cookie 安全，Session 是存储在服务器端的，Cookie 是存储在客户端的。
-- 单个 Cookie 保存的数据不能超过 4K，Session 可存储数据远高于 Cookie
+- 单个 Cookie 保存的数据不能超过 4Kb，Session 可存储数据远高于 Cookie
 - Cookie 可设置为长时间保持，比如我们经常使用的默认登录功能，Session 一般失效时间较短

@@ -111,7 +111,7 @@
 
 - 阻止不明外域的访问
   - 同源检测
-  - `Samesite Cookie`
+  - `Samesite Cookie`  Cookie 的`SameSite`属性用来限制第三方 Cookie，从而减少安全风险
 - 提交时要求附加本域才能获取的信息
   - `CSRF Token`
   - 双重`Cookie`验证
