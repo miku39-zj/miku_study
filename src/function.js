@@ -29,6 +29,8 @@ console.log(foo1(1, 1, 1)); // => 12  编译成es6 块级作用域
 // 手写模板字符串
 function render(template, context) {
   return template.replace(/\{\{(.*?)\}\}/g, (match, key) => {
+    console.log(match);
+    console.log(key);
     return context[key]
   });
 }
