@@ -27,42 +27,29 @@ class firstPlugin {
           return str.length
         }
       }
+      compiler.plugin('done', (stats) => {
+        // 在 done 事件中回调 doneCallback
+        this.doneCallback(stats);
+      });
+      compiler.plugin('failed', (err) => {
+        // 在 failed 事件中回调 failCallback
+        this.failCallback(err);
+      });
       callback()
     })
   }
 }
 module.exports = firstPlugin
 
-
-function WebpackOpenBrowserPlugin (options) {
-  this.options = options || {}
-}
-
-function once (fn) {
-  var called = false
-  return function () {
-    if (called) return
-    called = true
-    fn()
+class miniPlugin {
+  constructor(options) {
+    this.options = options
   }
-}
-
-WebpackOpenBrowserPlugin.prototype.apply = function (compiler) {
-  var t = this
-  // Open the browser should be once
-  compiler.hooks.done.tap('WebpackOpenBrowserPlugin', once(function () {
-    var url = t.options.url
-    if (!url) {
-      console.error('please pass a url, like: new WebpackOpenBrowserPlugin({ url: "http://localhost:8080" })')
-      return
-    }
-
-    // setTimeout delay is used because there is no need to make webpack wait for the browser to open
-    setTimeout(function () {
-      var open = require('opn')
+  apply(compiler) {
+    compiler.hooks.done.tap('miniPlugin', () => {
+      const url = this.options.url
+      const open = require('opn')
       open(url)
     })
-  }))
+  }
 }
-
-module.exports = WebpackOpenBrowserPlugin
