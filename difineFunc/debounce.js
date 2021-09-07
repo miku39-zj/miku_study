@@ -10,9 +10,7 @@ function debounce(func, wait, immediate) {
     if (immediate && !timeOut) {
       func.apply(_this,args)
     }
-    if (timeOut) {
-      timeOut = null
-    }
+    timeOut && clearTimeout(timeOut)
     timeOut = setTimeout(()=> {
       func.apply(_this, args)
     }, wait)

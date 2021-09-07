@@ -23,7 +23,7 @@ Function.prototype.myapply = function (context, args) {
   }
   context = context || window
   const fn = Symbol('fn')
-  context['fn'] = this
+  context[fn] = this
   const res = context[fn](...args)
   delete context[fn]
   return res
@@ -36,7 +36,7 @@ Function.prototype.mybind = function(context, ...args) {
   }
   context = context || window
   const fn = Symbol('fn')
-  context['fn'] = this
+  context[fn] = this
   return function(...args2) {
     const res = context[fn](...args,...args2)
     delete context[fn]

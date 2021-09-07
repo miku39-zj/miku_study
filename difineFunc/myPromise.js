@@ -40,10 +40,11 @@ class MyPromise {
   then(onFulfilled, onRejected) { //then接收两参数，onFulfilled, onRejected,当状态是FULFILLED执行onFulfilled 是rejected执行onRejected
     const promise2 = new MyPromise((resolve, reject) => {
       if (this.status === FULFILLED) {
-        if(onFulfilled instanceof Promise) {
-          return onFulfilled
-        } else {
-          onFulfilled(this.value) //执行
+        const x = onFulfilled(this.value) //执行
+        if(x instanceof Promise) {
+          x.then(value => resolve(), err => reject(err))
+        }else {
+          resolve(x)
         }
       } else if (this.status === REJECTED) {
         onRejected(this.reason) //执行
@@ -58,13 +59,13 @@ class MyPromise {
     if (this.status === REJECTED) {
       onRejected(this.reason) //执行
     }
-  }
-  finally (fn) {
+  } 
+  finally(fn) {
     return this.then(res => {
       Promise.resolve(fn()).then(res => {
         return res
       })
-    },err => {
+    }, err => {
       Promise.reject(fn()).then(err => {
         throw err
       })
