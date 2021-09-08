@@ -22,7 +22,7 @@ class LRUCache {
   put(key, value) { // 添加
     if (this.secreKey.has(key)) {
       this.secreKey.delete(key)
-      this.secreKey.set(key)
+      this.secreKey.set(key, value)
     }else if (this.secreKey.size < this.capacity) {
       this.secreKey.set(key, value)
     }else {
