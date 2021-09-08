@@ -271,7 +271,7 @@ TypeError,Math, Array, isNaN,Math,Date,Map,Proxy,Promise,Reflet.....
 
 任务列表里有很多宏任务，每个宏任务里有个微任务列表，每个宏任务在执行第二个宏任务之前，会把自己里的微任务执行完
 
-微任务：
+微任务：`Promise`、`Async/Await`、`Object.observe`以及`MutationObserver`，都是**JS语法内置的方法**， 不需要浏览器支持，可以理解为直接用JS引擎就能处理掉的任务
 
 `async`函数 在 `await` 前都是同步代码, wait后面的函数执行完毕时，await会产生一个微任务(Promise.then是微任务)
 
