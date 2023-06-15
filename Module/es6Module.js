@@ -40,12 +40,19 @@
 // JS 引擎对脚本静态分析的时候，遇到模块加载命令import，就会生成一个只读引用。
 //等到脚本真正执行时，再根据这个只读引用，到被加载的那个模块里面去取值
 // export 命令会有变量声明提前的效果。
-export let obj = {
-  name:"miku",
-  age: 20
-}
-export let counter = 3
-export let changeCouter = () => {
-  counter = 39
-}
-console.log("es6aaaaaaaa");
+// export let obj = {
+//   name:"miku",
+//   age: 20
+// }
+// export let counter = 3
+// export let changeCouter = () => {
+//   counter = 39
+// }
+
+// const add = function() {
+//   return () => counter++
+// }
+// let one = add()
+// one()
+
+let a = 12
