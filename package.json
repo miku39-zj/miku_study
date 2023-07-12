@@ -1,0 +1,35 @@
+{
+  "name": "miku-ui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "pnpm -C play dev",
+    "build": "gulp -f build/gulpfile.ts",
+    "buildPack": "pnpm run --filter ./packages/** --parallel build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/gulp": "^4.0.13",
+    "@types/gulp-autoprefixer": "^0.0.34",
+    "@types/gulp-clean-css": "^4.3.1",
+    "@types/gulp-sass": "^5.0.1",
+    "@types/sass": "^1.45.0",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^8.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-sass": "^5.1.0",
+    "gulp-typescript": "6.0.0-alpha.1",
+    "sass": "^1.63.6",
+    "sucrase": "^3.32.0",
+    "typescript": "^5.1.6",
+    "vue": "^3.2.36"
+  },
+  "dependencies": {
+    "@miku-ui/components": "workspace:^1.0.0",
+    "@miku-ui/theme-chalk": "workspace:^1.0.0",
+    "@miku-ui/utils": "workspace:^1.0.0"
+  }
+}

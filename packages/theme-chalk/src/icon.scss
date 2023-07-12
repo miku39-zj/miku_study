@@ -1,0 +1,1138 @@
+@use './mixins/mixins.scss' as *;
+
+@font-face {
+  font-family: "miku-icon";
+  src: 
+       url('./fonts/iconfont.woff2') format('woff2')
+       url('./fonts/iconfont.woff') format('woff'),
+       url('./fonts/icomikunfont.ttf') format('truetype');
+}
+
+[class^='#{$namespace}-icon'], [class*='#{$namespace}-icon'] {
+  font-family: "miku-icon" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.#{$namespace}-icon_calendar:before {
+  content: "\e812";
+}
+
+.#{$namespace}-icon_consume:before {
+  content: "\e83a";
+}
+
+.#{$namespace}-icon_truck:before {
+  content: "\e852";
+}
+
+.#{$namespace}-icon_legend_line_node1:before {
+  content: "\e7bc";
+}
+
+.#{$namespace}-icon_legend_circle:before {
+  content: "\e7b8";
+}
+
+.#{$namespace}-icon_legend_line_dotted:before {
+  content: "\e7b9";
+}
+
+.#{$namespace}-icon_legend_line_solid:before {
+  content: "\e7ba";
+}
+
+.#{$namespace}-icon_legend_retangle:before {
+  content: "\e7bb";
+}
+
+.#{$namespace}-icon_feedback:before {
+  content: "\e708";
+}
+
+.#{$namespace}-icon_refund:before {
+  content: "\e709";
+}
+
+.#{$namespace}-icon_review:before {
+  content: "\e70a";
+}
+
+.#{$namespace}-icon_nav_bulb:before {
+  content: "\e811";
+}
+
+.#{$namespace}-icon_intercept:before {
+  content: "\e7b7";
+}
+
+.#{$namespace}-icon_data_left_simple:before {
+  content: "\e7b6";
+}
+
+.#{$namespace}-icon_data_right_simple:before {
+  content: "\e7b5";
+}
+
+.#{$namespace}-icon_drill_down:before {
+  content: "\e7b4";
+}
+
+.#{$namespace}-icon_globe:before {
+  content: "\e7b3";
+}
+
+.#{$namespace}-icon_mail_settled:before {
+  content: "\e707";
+}
+
+.#{$namespace}-icon_legend_line_node:before {
+  content: "\e7b2";
+}
+
+.#{$namespace}-icon_chart_scatter:before {
+  content: "\e7b1";
+}
+
+.#{$namespace}-icon_chatgpt:before {
+  content: "\e706";
+}
+
+.#{$namespace}-icon_query:before {
+  content: "\e702";
+}
+
+.#{$namespace}-icon_heart:before {
+  content: "\e703";
+}
+
+.#{$namespace}-icon_inspiration:before {
+  content: "\e704";
+}
+
+.#{$namespace}-icon_quite:before {
+  content: "\e705";
+}
+
+.#{$namespace}-icon_mail_optimize:before {
+  content: "\e6fe";
+}
+
+.#{$namespace}-icon_mail_autoreply:before {
+  content: "\e6ff";
+}
+
+.#{$namespace}-icon_mail_translate:before {
+  content: "\e700";
+}
+
+.#{$namespace}-icon_mail_analysize:before {
+  content: "\e701";
+}
+
+.#{$namespace}-icon_playCircle:before {
+  content: "\e810";
+}
+
+.#{$namespace}-icon_calculate:before {
+  content: "\e7b0";
+}
+
+.#{$namespace}-icon_icon_subset:before {
+  content: "\e650";
+}
+
+.#{$namespace}-icon_help:before {
+  content: "\e7af";
+}
+
+.#{$namespace}-icon_sort:before {
+  content: "\e80f";
+}
+
+.#{$namespace}-icon_ad_tag:before {
+  content: "\e809";
+}
+
+.#{$namespace}-icon_ad_Text_search:before {
+  content: "\e80a";
+}
+
+.#{$namespace}-icon_ad_Time:before {
+  content: "\e80b";
+}
+
+.#{$namespace}-icon_ad_Strategy:before {
+  content: "\e80c";
+}
+
+.#{$namespace}-icon_ad_Wait:before {
+  content: "\e80d";
+}
+
+.#{$namespace}-icon_nav_Analysis:before {
+  content: "\e80e";
+}
+
+.#{$namespace}-icon_ad_Change:before {
+  content: "\e7fe";
+}
+
+.#{$namespace}-icon_ad_Clear:before {
+  content: "\e7ff";
+}
+
+.#{$namespace}-icon_ad_ad:before {
+  content: "\e800";
+}
+
+.#{$namespace}-icon_ad_Air:before {
+  content: "\e801";
+}
+
+.#{$namespace}-icon_ad_auto:before {
+  content: "\e802";
+}
+
+.#{$namespace}-icon_ad_data:before {
+  content: "\e803";
+}
+
+.#{$namespace}-icon_ad_Log:before {
+  content: "\e804";
+}
+
+.#{$namespace}-icon_ad_more:before {
+  content: "\e805";
+}
+
+.#{$namespace}-icon_ad_key:before {
+  content: "\e806";
+}
+
+.#{$namespace}-icon_ad_search:before {
+  content: "\e807";
+}
+
+.#{$namespace}-icon_ad_Compare:before {
+  content: "\e808";
+}
+
+.#{$namespace}-icon_nav_structure:before {
+  content: "\e7fb";
+}
+
+.#{$namespace}-icon_enter:before {
+  content: "\e6fd";
+}
+
+.#{$namespace}-icon_pause:before {
+  content: "\e7fa";
+}
+
+.#{$namespace}-icon_replenishment_report:before {
+  content: "\e7ae";
+}
+
+.#{$namespace}-icon_order_ascending:before {
+  content: "\e7ac";
+}
+
+.#{$namespace}-icon_order_descending:before {
+  content: "\e7ad";
+}
+
+.#{$namespace}-icon_assess_good:before {
+  content: "\e6fb";
+}
+
+.#{$namespace}-icon_assess_best:before {
+  content: "\e6fc";
+}
+
+.#{$namespace}-icon_assess_worst:before {
+  content: "\e6f8";
+}
+
+.#{$namespace}-icon_assess_bad:before {
+  content: "\e6f9";
+}
+
+.#{$namespace}-icon_assess_normal:before {
+  content: "\e6fa";
+}
+
+.#{$namespace}-icon_nav_data:before {
+  content: "\e7f8";
+}
+
+.#{$namespace}-icon_box:before {
+  content: "\e7f1";
+}
+
+.#{$namespace}-icon_order:before {
+  content: "\e7f2";
+}
+
+.#{$namespace}-icon_commodity:before {
+  content: "\e7f3";
+}
+
+.#{$namespace}-icon_about_refresh:before {
+  content: "\e7a9";
+}
+
+.#{$namespace}-icon_tab_openapi:before {
+  content: "\e6f5";
+}
+
+.#{$namespace}-icon_flag:before {
+  content: "\e6f6";
+}
+
+.#{$namespace}-icon_person:before {
+  content: "\e6f7";
+}
+
+.#{$namespace}-icon_group1:before {
+  content: "\e7a8";
+}
+
+.#{$namespace}-icon_icon_bi:before {
+  content: "\e64e";
+}
+
+.#{$namespace}-icon_snowflake:before {
+  content: "\e7ef";
+}
+
+.#{$namespace}-icon_analyze:before {
+  content: "\e7ee";
+}
+
+.#{$namespace}-icon_mail_rma_commerditylist:before {
+  content: "\e6f3";
+}
+
+.#{$namespace}-icon_mail_rma_orderlist:before {
+  content: "\e6f4";
+}
+
+.#{$namespace}-icon_wordle:before {
+  content: "\e7e8";
+}
+
+.#{$namespace}-icon_collapse_details:before {
+  content: "\e7a4";
+}
+
+.#{$namespace}-icon_display_details:before {
+  content: "\e7a5";
+}
+
+.#{$namespace}-icon_add:before {
+  content: "\e7a6";
+}
+
+.#{$namespace}-icon_multiply:before {
+  content: "\e7a7";
+}
+
+.#{$namespace}-icon_image_filled:before {
+  content: "\e7a3";
+}
+
+.#{$namespace}-icon_data_up_simple:before {
+  content: "\e7a1";
+}
+
+.#{$namespace}-icon_data_down_simple:before {
+  content: "\e7a2";
+}
+
+.#{$namespace}-icon_overseas:before {
+  content: "\e607";
+}
+
+.#{$namespace}-icon_legend_dotted:before {
+  content: "\e606";
+}
+
+.#{$namespace}-icon_legend_score:before {
+  content: "\e604";
+}
+
+.#{$namespace}-icon_legend_remarks:before {
+  content: "\e605";
+}
+
+.#{$namespace}-icon_text:before {
+  content: "\e79f";
+}
+
+.#{$namespace}-icon_aim:before {
+  content: "\e7a0";
+}
+
+.#{$namespace}-icon_full_screen_exit:before {
+  content: "\e79e";
+}
+
+.#{$namespace}-icon_Unhappy:before {
+  content: "\e7db";
+}
+
+.#{$namespace}-icon_stamp:before {
+  content: "\e6f2";
+}
+
+.#{$namespace}-icon_image:before {
+  content: "\e799";
+}
+
+.#{$namespace}-icon_view_text:before {
+  content: "\e79a";
+}
+
+.#{$namespace}-icon_add_text:before {
+  content: "\e79b";
+}
+
+.#{$namespace}-icon_table_list_setting:before {
+  content: "\e79c";
+}
+
+.#{$namespace}-icon_full_screen:before {
+  content: "\e79d";
+}
+
+.#{$namespace}-icon_avatar:before {
+  content: "\e796";
+}
+
+.#{$namespace}-icon_cloud_upload:before {
+  content: "\e797";
+}
+
+.#{$namespace}-icon_add_image:before {
+  content: "\e798";
+}
+
+.#{$namespace}-icon_hide:before {
+  content: "\e6f1";
+}
+
+.#{$namespace}-icon_edit_multiply:before {
+  content: "\e8c1";
+}
+
+.#{$namespace}-icon_fixed:before {
+  content: "\e8c0";
+}
+
+.#{$namespace}-icon_top:before {
+  content: "\e8bf";
+}
+
+.#{$namespace}-icon_popup_guide02:before {
+  content: "\e6e7";
+}
+
+.#{$namespace}-icon_nav_platform:before {
+  content: "\e8be";
+}
+
+.#{$namespace}-icon_table_defaultlayout:before {
+  content: "\e6e6";
+}
+
+.#{$namespace}-icon_field_delete:before {
+  content: "\e8bd";
+}
+
+.#{$namespace}-icon_img_add:before {
+  content: "\e8bc";
+}
+
+.#{$namespace}-icon_score_pre:before {
+  content: "\e8bb";
+}
+
+.#{$namespace}-icon_img_rotation_rev:before {
+  content: "\e8b5";
+}
+
+.#{$namespace}-icon_img_link:before {
+  content: "\e8b6";
+}
+
+.#{$namespace}-icon_img_delete:before {
+  content: "\e8b7";
+}
+
+.#{$namespace}-icon_img_upload:before {
+  content: "\e8b8";
+}
+
+.#{$namespace}-icon_img_more:before {
+  content: "\e8b9";
+}
+
+.#{$namespace}-icon_img_setprimary:before {
+  content: "\e8ba";
+}
+
+.#{$namespace}-icon_configuration:before {
+  content: "\e8b4";
+}
+
+.#{$namespace}-icon_refresh:before {
+  content: "\e7da";
+}
+
+.#{$namespace}-icon_doublearrow_down_rev:before {
+  content: "\e603";
+}
+
+.#{$namespace}-icon_audit-success:before {
+  content: "\e8b2";
+}
+
+.#{$namespace}-icon_audit-error:before {
+  content: "\e8b3";
+}
+
+.#{$namespace}-icon_table_filter_nor:before {
+  content: "\e602";
+}
+
+.#{$namespace}-icon_font_unfold_rev:before {
+  content: "\e601";
+}
+
+.#{$namespace}-icon_font_fold_rev:before {
+  content: "\e600";
+}
+
+.#{$namespace}-icon_template_border:before {
+  content: "\e89e";
+}
+
+.#{$namespace}-icon_template_fontcolor:before {
+  content: "\e89f";
+}
+
+.#{$namespace}-icon_template_rescind:before {
+  content: "\e8a0";
+}
+
+.#{$namespace}-icon_template_italic:before {
+  content: "\e8a1";
+}
+
+.#{$namespace}-icon_template_interchange:before {
+  content: "\e8a2";
+}
+
+.#{$namespace}-icon_template_barcode:before {
+  content: "\e8a3";
+}
+
+.#{$namespace}-icon_template_revolve_angle:before {
+  content: "\e8a4";
+}
+
+.#{$namespace}-icon_template_QRcode:before {
+  content: "\e8a5";
+}
+
+.#{$namespace}-icon_template_rescind_rev:before {
+  content: "\e8a6";
+}
+
+.#{$namespace}-icon_template_text_center:before {
+  content: "\e8a7";
+}
+
+.#{$namespace}-icon_template_text_left:before {
+  content: "\e8a8";
+}
+
+.#{$namespace}-icon_template_revolve:before {
+  content: "\e8a9";
+}
+
+.#{$namespace}-icon_template_text_up:before {
+  content: "\e8aa";
+}
+
+.#{$namespace}-icon_template_text_down:before {
+  content: "\e8ab";
+}
+
+.#{$namespace}-icon_template_barcode_text:before {
+  content: "\e8ac";
+}
+
+.#{$namespace}-icon_template_text_right:before {
+  content: "\e8ad";
+}
+
+.#{$namespace}-icon_template_text_middle:before {
+  content: "\e8ae";
+}
+
+.#{$namespace}-icon_template_bold:before {
+  content: "\e8af";
+}
+
+.#{$namespace}-icon_template_underline:before {
+  content: "\e8b0";
+}
+
+.#{$namespace}-icon_template_bg:before {
+  content: "\e8b1";
+}
+
+.#{$namespace}-icon_rank_first1:before {
+  content: "\e89b";
+}
+
+.#{$namespace}-icon_rank_three1:before {
+  content: "\e89c";
+}
+
+.#{$namespace}-icon_rank_two1:before {
+  content: "\e89d";
+}
+
+.#{$namespace}-icon_tip_delete:before {
+  content: "\e895";
+}
+
+.#{$namespace}-icon_tip_error:before {
+  content: "\e897";
+}
+
+.#{$namespace}-icon_tip_success:before {
+  content: "\e898";
+}
+
+.#{$namespace}-icon_tip_warning:before {
+  content: "\e899";
+}
+
+.#{$namespace}-icon_tip_info:before {
+  content: "\e89a";
+}
+
+.#{$namespace}-icon_mail_page_mini:before {
+  content: "\e88c";
+}
+
+.#{$namespace}-icon_mail_operation_more:before {
+  content: "\e88d";
+}
+
+.#{$namespace}-icon_mail_options_more:before {
+  content: "\e88e";
+}
+
+.#{$namespace}-icon_mail_page_maxi:before {
+  content: "\e88f";
+}
+
+.#{$namespace}-icon_mail_page_default:before {
+  content: "\e890";
+}
+
+.#{$namespace}-icon_mail_tag:before {
+  content: "\e891";
+}
+
+.#{$namespace}-icon_mail_fold:before {
+  content: "\e892";
+}
+
+.#{$namespace}-icon_mail_countdown:before {
+  content: "\e893";
+}
+
+.#{$namespace}-icon_mail_outbox:before {
+  content: "\e88a";
+}
+
+.#{$namespace}-icon_mail_upload:before {
+  content: "\e88b";
+}
+
+.#{$namespace}-icon_mail_cogradient:before {
+  content: "\e882";
+}
+
+.#{$namespace}-icon_mail_add:before {
+  content: "\e884";
+}
+
+.#{$namespace}-icon_mail_inbox:before {
+  content: "\e885";
+}
+
+.#{$namespace}-icon_mail_draft:before {
+  content: "\e886";
+}
+
+.#{$namespace}-icon_mail_letter:before {
+  content: "\e887";
+}
+
+.#{$namespace}-icon_mail_amazon:before {
+  content: "\e888";
+}
+
+.#{$namespace}-icon_mail_reply_def:before {
+  content: "\e87d";
+}
+
+.#{$namespace}-icon_mail_qa:before {
+  content: "\e87e";
+}
+
+.#{$namespace}-icon_mail_reply:before {
+  content: "\e87f";
+}
+
+.#{$namespace}-icon_mail_reply_com:before {
+  content: "\e880";
+}
+
+.#{$namespace}-icon_mail_reply_all:before {
+  content: "\e881";
+}
+
+.#{$namespace}-icon_mail_forward:before {
+  content: "\e877";
+}
+
+.#{$namespace}-icon_mail_read:before {
+  content: "\e878";
+}
+
+.#{$namespace}-icon_mail_folder:before {
+  content: "\e879";
+}
+
+.#{$namespace}-icon_mail_unread:before {
+  content: "\e87a";
+}
+
+.#{$namespace}-icon_mail_resend:before {
+  content: "\e87b";
+}
+
+.#{$namespace}-icon_mail_move:before {
+  content: "\e87c";
+}
+
+.#{$namespace}-icon_visible:before {
+  content: "\e862";
+}
+
+.#{$namespace}-icon_invisible:before {
+  content: "\e865";
+}
+
+.#{$namespace}-icon_face_neutral:before {
+  content: "\e7d7";
+}
+
+.#{$namespace}-icon_face_pouting:before {
+  content: "\e7d8";
+}
+
+.#{$namespace}-icon_face_smiling:before {
+  content: "\e7d9";
+}
+
+.#{$namespace}-icon_audit-wait:before {
+  content: "\e896";
+}
+
+.#{$namespace}-icon_score_def:before {
+  content: "\e894";
+}
+
+.#{$namespace}-icon_rank_first:before {
+  content: "\e88e";
+}
+
+.#{$namespace}-icon_rank_two:before {
+  content: "\e88f";
+}
+
+.#{$namespace}-icon_rank_three:before {
+  content: "\e890";
+}
+
+.#{$namespace}-icon_data_up_rev:before {
+  content: "\e873";
+}
+
+.#{$namespace}-icon_page_loading:before {
+  content: "\e871";
+}
+
+.#{$namespace}-icon_edit_text:before {
+  content: "\e86d";
+}
+
+.#{$namespace}-icon_legend:before {
+  content: "\e86f";
+}
+
+.#{$namespace}-icon_rmb:before {
+  content: "\e870";
+}
+
+.#{$namespace}-icon_popup_guide:before {
+  content: "\e86c";
+}
+
+.#{$namespace}-icon_data_loading:before {
+  content: "\e86e";
+}
+
+.#{$namespace}-icon_group:before {
+  content: "\e86b";
+}
+
+.#{$namespace}-icon_empower_fail:before {
+  content: "\e869";
+}
+
+.#{$namespace}-icon_empower_suc:before {
+  content: "\e86a";
+}
+
+.#{$namespace}-icon_expired:before {
+  content: "\e867";
+}
+
+.#{$namespace}-icon_nav_asinking:before {
+  content: "\e866";
+}
+
+.#{$namespace}-icon_mail_rule_amazon:before {
+  content: "\e863";
+}
+
+.#{$namespace}-icon_mail_rule_customize:before {
+  content: "\e864";
+}
+
+.#{$namespace}-icon_picture_fail:before {
+  content: "\e860";
+}
+
+.#{$namespace}-icon_goods:before {
+  content: "\e861";
+}
+
+.#{$namespace}-icon_img_download:before {
+  content: "\e859";
+}
+
+.#{$namespace}-icon_img_enlarge:before {
+  content: "\e85a";
+}
+
+.#{$namespace}-icon_img_front_rev:before {
+  content: "\e85b";
+}
+
+.#{$namespace}-icon_img_close:before {
+  content: "\e85c";
+}
+
+.#{$namespace}-icon_img_max:before {
+  content: "\e85d";
+}
+
+.#{$namespace}-icon_img_normal:before {
+  content: "\e85e";
+}
+
+.#{$namespace}-icon_img_reduce:before {
+  content: "\e85f";
+}
+
+.#{$namespace}-icon_btn_list:before {
+  content: "\e855";
+}
+
+.#{$namespace}-icon_btn_grid:before {
+  content: "\e856";
+}
+
+.#{$namespace}-icon_btn_graphic:before {
+  content: "\e857";
+}
+
+.#{$namespace}-icon_form_down_rev:before {
+  content: "\e854";
+}
+
+.#{$namespace}-icon_sort_def:before {
+  content: "\e853";
+}
+
+.#{$namespace}-icon_collect_def:before {
+  content: "\e850";
+}
+
+.#{$namespace}-icon_collect_sel:before {
+  content: "\e851";
+}
+
+.#{$namespace}-icon_nav_newpage:before {
+  content: "\e84f";
+}
+
+.#{$namespace}-icon_sidebar_open_rev:before {
+  content: "\e84e";
+}
+
+.#{$namespace}-icon_move:before {
+  content: "\e84d";
+}
+
+.#{$namespace}-icon_change:before {
+  content: "\e84c";
+}
+
+.#{$namespace}-icon_sound_close:before {
+  content: "\e84a";
+}
+
+.#{$namespace}-icon_sound_open:before {
+  content: "\e84b";
+}
+
+.#{$namespace}-icon_set:before {
+  content: "\e846";
+}
+
+.#{$namespace}-icon_information:before {
+  content: "\e847";
+}
+
+.#{$namespace}-icon_time_refresh:before {
+  content: "\e848";
+}
+
+.#{$namespace}-icon_warning:before {
+  content: "\e849";
+}
+
+.#{$namespace}-icon_upload:before {
+  content: "\e845";
+}
+
+.#{$namespace}-icon_file:before {
+  content: "\e844";
+}
+
+.#{$namespace}-icon_chart:before {
+  content: "\e843";
+}
+
+.#{$namespace}-icon_copy:before {
+  content: "\e841";
+}
+
+.#{$namespace}-icon_edit:before {
+  content: "\e842";
+}
+
+.#{$namespace}-icon_delete:before {
+  content: "\e840";
+}
+
+.#{$namespace}-icon_edit_add:before {
+  content: "\e83e";
+}
+
+.#{$namespace}-icon_edit_reduce:before {
+  content: "\e83f";
+}
+
+.#{$namespace}-icon_order_add:before {
+  content: "\e83c";
+}
+
+.#{$namespace}-icon_order_reduce:before {
+  content: "\e83d";
+}
+
+.#{$namespace}-icon_ok:before {
+  content: "\e83b";
+}
+
+.#{$namespace}-icon_close:before {
+  content: "\e839";
+}
+
+.#{$namespace}-icon_combo_close_hov:before {
+  content: "\e838";
+}
+
+.#{$namespace}-icon_combo_search:before {
+  content: "\e834";
+}
+
+.#{$namespace}-icon_combo_date:before {
+  content: "\e831";
+}
+
+.#{$namespace}-icon_combo_filter:before {
+  content: "\e832";
+}
+
+.#{$namespace}-icon_collapse_arrow_full_rev:before {
+  content: "\e833";
+}
+
+.#{$namespace}-icon_combo_time_to:before {
+  content: "\e835";
+}
+
+.#{$namespace}-icon_year_front_rev:before {
+  content: "\e836";
+}
+
+.#{$namespace}-icon_combo_time:before {
+  content: "\e837";
+}
+
+.#{$namespace}-icon_arrow_down_rev:before {
+  content: "\e830";
+}
+
+.#{$namespace}-icon_table_screen:before {
+  content: "\e82e";
+}
+
+.#{$namespace}-icon_table_update:before {
+  content: "\e82f";
+}
+
+.#{$namespace}-icon_table_home:before {
+  content: "\e827";
+}
+
+.#{$namespace}-icon_table_explain:before {
+  content: "\e828";
+}
+
+.#{$namespace}-icon_table_data:before {
+  content: "\e829";
+}
+
+.#{$namespace}-icon_table_download:before {
+  content: "\e82a";
+}
+
+.#{$namespace}-icon_table_refresh:before {
+  content: "\e82b";
+}
+
+.#{$namespace}-icon_table_parities:before {
+  content: "\e82c";
+}
+
+.#{$namespace}-icon_table_budget:before {
+  content: "\e82d";
+}
+
+.#{$namespace}-icon_tab_service:before {
+  content: "\e825";
+}
+
+.#{$namespace}-icon_tab_warning:before {
+  content: "\e826";
+}
+
+.#{$namespace}-icon_tab_download:before {
+  content: "\e821";
+}
+
+.#{$namespace}-icon_tab_message:before {
+  content: "\e822";
+}
+
+.#{$namespace}-icon_tab_amazon:before {
+  content: "\e823";
+}
+
+.#{$namespace}-icon_tab_multiplatform:before {
+  content: "\e824";
+}
+
+.#{$namespace}-icon_nav_open_rev:before {
+  content: "\e820";
+}
+
+.#{$namespace}-icon_nav_statistical:before {
+  content: "\e81d";
+}
+
+.#{$namespace}-icon_nav_tool:before {
+  content: "\e81e";
+}
+
+.#{$namespace}-icon_nav_storehouse:before {
+  content: "\e81f";
+}
+
+.#{$namespace}-icon_nav_goods:before {
+  content: "\e813";
+}
+
+.#{$namespace}-icon_nav_advertisement:before {
+  content: "\e814";
+}
+
+.#{$namespace}-icon_nav_fba:before {
+  content: "\e815";
+}
+
+.#{$namespace}-icon_nav_audit:before {
+  content: "\e816";
+}
+
+.#{$namespace}-icon_nav_logistics:before {
+  content: "\e817";
+}
+
+.#{$namespace}-icon_nav_financial:before {
+  content: "\e818";
+}
+
+.#{$namespace}-icon_nav_service:before {
+  content: "\e819";
+}
+
+.#{$namespace}-icon_nav_sales:before {
+  content: "\e81a";
+}
+
+.#{$namespace}-icon_nav_purchase:before {
+  content: "\e81b";
+}
+
+.#{$namespace}-icon_nav_set:before {
+  content: "\e81c";
+}
+

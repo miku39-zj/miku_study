@@ -1,0 +1,12 @@
+{
+  "name": "@miku-ui/theme-chalk",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "gulp -f gulpfile.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
