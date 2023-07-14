@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "pnpm -C play dev",
     "build": "gulp -f build/gulpfile.ts",
-    "buildPack": "pnpm run --filter ./packages/** --parallel build"
+    "buildPack": "pnpm run --filter ./packages/** --parallel build",
+    "doc:dev": "pnpm -C docs dev"
   },
   "keywords": [],
   "author": "",
