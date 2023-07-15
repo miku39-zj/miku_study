@@ -36,6 +36,7 @@
   "dependencies": {
     "@miku-ui/components": "workspace:^1.0.0",
     "@miku-ui/theme-chalk": "workspace:^1.0.0",
-    "@miku-ui/utils": "workspace:^1.0.0"
+    "@miku-ui/utils": "workspace:^1.0.0",
+    "async-validator": "^4.2.5"
   }
 }
