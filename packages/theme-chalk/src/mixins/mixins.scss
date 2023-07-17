@@ -2,3 +2,33 @@
 @use 'config' as *;
 @forward 'config';
 
+@mixin b($block) {
+  $B: $namespace + '-' + $block;
+  .#{$B} {
+    @content;
+  }
+};
+
+@mixin when($state) {
+  @at-root {
+    &.#{$state-prefix + $state} {
+      @content
+    }
+  }
+};
+
+@mixin m($modifier) {
+  @at-root {
+    &.#{&+$modifier-prefix + $modifier} {
+      @content
+    }
+  }
+};
+
+@mixin e($element) {
+  @at-root {
+    &.#{&+$element-prefix + $element} {
+      @content
+    }
+  }
+}

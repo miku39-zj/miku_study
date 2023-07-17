@@ -1,8 +1,14 @@
 import { withInstall } from "@miku-ui/utils/with-install";
 import Icon from "./src/Icon.vue";
 
-const mikuIcon = withInstall(Icon);
+const mIcon = withInstall(Icon);
 
-export { mikuIcon };
+export { mIcon };
 
-export default mikuIcon;
+export default mIcon;
+
+declare module 'vue' {
+  export interface GlobalComponents {
+    mIcon: typeof mIcon
+  }
+}

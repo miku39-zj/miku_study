@@ -16,6 +16,8 @@ export interface FormItemRule extends RuleItem {
   trigger?: Arrayable<string>
 }
 
+export const formItemValidateState = ['success', 'error', ''] as const
+export type FormItemValidateState = typeof formItemValidateState[number]
 export const formItemProps = {
   prop: String,
   label: String,
