@@ -9,7 +9,7 @@
 // 事件  change / blur
 
 import type {RuleItem} from 'async-validator'
-import { ExtractPropTypes, PropType } from 'vue'
+import { ExtractPropTypes, InjectionKey, PropType } from 'vue'
 
 export type Arrayable<T> = T | T[]
 export interface FormItemRule extends RuleItem {
@@ -28,4 +28,9 @@ export const formItemProps = {
   }
 } as const
 
-export type FormItem =  Partial<ExtractPropTypes<typeof formItemProps>> 
+export type FormItemProps =  Partial<ExtractPropTypes<typeof formItemProps>> 
+
+export interface FormItemContext extends FormItemProps {
+  validate: (trigger: string, callback?: (isValid: boolean) => void) => Promise<void>
+}
+export const formItemContextKey: InjectionKey<FormItemProps> = Symbol()
